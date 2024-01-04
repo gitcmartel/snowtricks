@@ -1,0 +1,2 @@
+# snowtricks
+Snowboad tricks blog
