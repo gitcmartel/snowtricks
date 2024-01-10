@@ -9,24 +9,11 @@
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,700,900&display=swap" rel="stylesheet">
     {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    {% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
-    <link rel="stylesheet" href="./public/fonts/icomoon/style.css">
-
-    <link rel="stylesheet" href="./public/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./public/css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="./public/css/jquery.fancybox.min.css">
-    <link rel="stylesheet" href="./public/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="./public/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="./public/fonts/flaticon/font/flaticon.css">
-    <link rel="stylesheet" href="./public/css/aos.css">
-
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href="./public/css/style.css">
-    {% endblock %}
-
+    <!-- {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %} -->
+    
     {% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
+    {% block importmap %}{{ importmap('app') }}{% endblock %}
+    <!--{{ encore_entry_script_tags('app') }}-->
     {% endblock %}
 </head>
 
@@ -49,8 +36,8 @@
 
                     <div class="col-3 ">
                         <div class="site-logo">
-                            <a href="index.html" class="font-weight-bold">
-                                <img src="images/logo.png" alt="Image" class="img-fluid">
+                            <a href="{{ path('app_home') }}" class="font-weight-bold">
+                                <img src="{{ asset('images/logo.png') }}" alt="Image" class="img-fluid">
                             </a>
                         </div>
                     </div>
@@ -62,11 +49,10 @@
 
                         <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
                             <ul class="site-menu main-menu js-clone-nav ml-auto ">
-                                <li class="active"><a href="index.html" class="nav-link">Home</a></li>
-                                <li><a href="about.html" class="nav-link">About</a></li>
-                                <li><a href="trips.html" class="nav-link">Trips</a></li>
-                                <li><a href="blog.html" class="nav-link">Blog</a></li>
-                                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                                <li class="active"><a href="{{ path('app_home') }}" class="nav-link">Home</a></li>
+                                <li><a href="about.html" class="nav-link">Tricks</a></li>
+                                <li><a href="trips.html" class="nav-link">Sign in</a></li>
+                                <li><a href="{{ path('app_subscription') }}" class="nav-link">Sign up</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -87,22 +73,22 @@
                         <h2 class="footer-heading mb-3">Instagram</h2>
                         <div class="row">
                             <div class="col-4 gal_col">
-                                <a href="#"><img src="images/insta_1.jpg" alt="Image" class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('images/insta_1.jpg') }}" alt="Image" class="img-fluid"></a>
                             </div>
                             <div class="col-4 gal_col">
-                                <a href="#"><img src="images/insta_2.jpg" alt="Image" class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('images/insta_2.jpg') }}" alt="Image" class="img-fluid"></a>
                             </div>
                             <div class="col-4 gal_col">
-                                <a href="#"><img src="images/insta_3.jpg" alt="Image" class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('images/insta_3.jpg') }}" alt="Image" class="img-fluid"></a>
                             </div>
                             <div class="col-4 gal_col">
-                                <a href="#"><img src="images/insta_4.jpg" alt="Image" class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('images/insta_4.jpg') }}" alt="Image" class="img-fluid"></a>
                             </div>
                             <div class="col-4 gal_col">
-                                <a href="#"><img src="images/insta_5.jpg" alt="Image" class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('images/insta_5.jpg') }}" alt="Image" class="img-fluid"></a>
                             </div>
                             <div class="col-4 gal_col">
-                                <a href="#"><img src="images/insta_6.jpg" alt="Image" class="img-fluid"></a>
+                                <a href="#"><img src="{{ asset('images/insta_6.jpg') }}" alt="Image" class="img-fluid"></a>
                             </div>
                         </div>
                     </div>
@@ -150,22 +136,7 @@
         <!-- End footer-->
     </div>
     {% block js %}
-        <script src="./public/js/jquery-3.3.1.min.js"></script>
-        <script src="./public/js/jquery-migrate-3.0.0.js"></script>
-        <script src="./public/js/popper.min.js"></script>
-        <script src="./public/js/bootstrap.min.js"></script>
-        <script src="./public/js/owl.carousel.min.js"></script>
-        <script src="./public/js/jquery.sticky.js"></script>
-        <script src="./public/js/jquery.waypoints.min.js"></script>
-        <script src="./public/js/jquery.animateNumber.min.js"></script>
-        <script src="./public/js/jquery.fancybox.min.js"></script>
-        <script src="./public/js/jquery.stellar.min.js"></script>
-        <script src="./public/js/jquery.easing.1.3.js"></script>
-        <script src="./public/js/bootstrap-datepicker.min.js"></script>
-        <script src="./public/js/isotope.pkgd.min.js"></script>
-        <script src="./public/js/aos.js"></script>
 
-        <script src="./public/js/main.js"></script>
     {% endblock %}
 </body>
 
