@@ -1,20 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SubscriptionController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="site-section">
+    <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+            <div class="col-md-10">
+                <div class="heading-39101 mb-5">
+                    <span class="backdrop text-center">Registration</span>
+                    <span class="subtitle-39191">Registration</span>
+                    <h3>Registration</h3>
+                </div>
+            </div>
+        </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/snowtricks/src/Controller/SubscriptionController.php'|file_link(0) }}">src/Controller/SubscriptionController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/snowtricks/templates/subscription/index.html.twig'|file_link(0) }}">templates/subscription/index.html.twig</a></code></li>
-    </ul>
+        <div class="row">
+            <div class="col-lg-4 ml-auto"></div>
+            <div class="col-lg-4 mb-5">
+                {{ form_start(formUser) }}
+                    <div class="form-group row">
+                        <div class="mb-4 mb-3">
+                            {{ form_label(formUser.username, 'Username', {'label_attr': {'class': 'w-100 text-center'}})}}
+                            {{ form_widget(formUser.username, {'attr': {'class': "form-control"}})}}
+                            <div class="text-danger">
+                                {{ form_errors(formUser.username) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12 mb-3">
+                            {{ form_label(formUser.email, 'Email', {'label_attr': {'class': 'w-100 text-center'}})}}
+                            {{ form_widget(formUser.email, {'attr': {'class': "form-control"}} )}}
+                            <div class="text-danger">
+                                {{ form_errors(formUser.email) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12 mb-3">
+                            {{ form_label(formUser.password, 'Password', {'label_attr': {'class': 'w-100 text-center'}})}}
+                            {{ form_widget(formUser.password, {'attr': {'class': "form-control"}} )}}
+                            <div class="text-danger">
+                                {{ form_errors(formUser.password) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12 mr-auto d-flex justify-content-center">
+                            <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5"
+                                value="Create an account">
+                        </div>
+                    </div>
+                {{ form_end(formUser) }}
+            </div>
+            <div class="col-lg-4 ml-auto"></div>
+        </div>
+    </div>
 </div>
 {% endblock %}
