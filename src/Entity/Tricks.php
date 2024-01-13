@@ -30,7 +30,7 @@ class Tricks
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?group $tricks_group = null;
+    private ?TricksGroup $tricks_group = null;
 
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
