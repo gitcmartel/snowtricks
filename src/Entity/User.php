@@ -6,11 +6,23 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(
+    fields: ['email'], 
+    message: 'Cette adresse email est déjà utilisée !'
+)]
+#[UniqueEntity(
+    fields: ['username'], 
+    message: 'Ce username est déjà utilisé !'
+)]
 #[Broadcast]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,12 +30,39 @@ class User
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $name = null;
+    #[assert\Length(
+        max: 20, 
+        maxMessage: "20 caractères maximum"
+    )]
+    #[Assert\NotBlank([
+        'message' => 'Le champ ne peut pas être vide'
+    ])]
+    private ?string $username = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, unique: true)]
+    #[assert\Length(
+        max: 100, 
+        maxMessage : "100 caractères maximum"
+    )]
+    #[Assert\NotBlank([
+        'message' => 'Le champ ne peut pas être vide'
+    ])]
+    #[Assert\Email([
+        'message' => 'Adresse email incorrecte'
+    ])]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    #[Assert\PasswordStrength([
+        'message' => 'Votre mot de passe n\'est pas assez fort. 
+        Ajoutez des chiffres, majuscules, minuscules et caractères spéciaux.'
+    ])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -49,14 +88,14 @@ class User
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->name;
+        return $this->username;
     }
 
-    public function setName(string $name): static
+    public function setUsername(string $username): static
     {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }
@@ -73,7 +112,39 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -85,14 +156,15 @@ class User
         return $this;
     }
 
-    public function getPasswodToken(): ?string
+    
+    public function getPasswordToken(): ?string
     {
-        return $this->passwod_token;
+        return $this->password_token;
     }
 
-    public function setPasswodToken(string $passwod_token): static
+    public function setPasswordToken(string $password_token): static
     {
-        $this->passwod_token = $passwod_token;
+        $this->password_token = $password_token;
 
         return $this;
     }
@@ -167,5 +239,14 @@ class User
         }
 
         return $this;
+    }
+    
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 }
