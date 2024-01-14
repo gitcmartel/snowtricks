@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
-#[ORM\Table(name: '`group`')]
+#[ORM\Table(name: 'tricks_group')]
 #[Broadcast]
-class Group
+class TricksGroup
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

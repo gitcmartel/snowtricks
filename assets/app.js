@@ -5,7 +5,7 @@
  * which should already be in your base.html.twig.
  */
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/bootstrap.min.css';
 import './styles/style.css';
 import './styles/aos.css';
 import './styles/jquery-ui.css';
