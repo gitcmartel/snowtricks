@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\ResetPasswordRequestFormType;
+use App\Service\SendMailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +12,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
-use Symfony\Component\Mailer\MailerInterface;
 
 
 class SecurityController extends AbstractController
@@ -41,11 +41,21 @@ class SecurityController extends AbstractController
 
             $context = compact('url', 'user');
 
-            
+            $mail->send(
+                'mailer@snowtricks.devcm.fr', 
+                $user->getEmail(), 
+                'Réinitialisation du mot de passe', 
+                'password_reset', 
+                $context
+            );
+
+            $this->addFlash('success', "Email envoyé avec succès");
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('security/forgotten-password.html.twig', [
             'controller_name' => 'SecurityController',
+            'formResetPasswordRequest' => $form->createView()
         ]);
     }
 }
