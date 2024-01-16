@@ -54,10 +54,23 @@
         </header>
         <!--End header -->
 
+        <!-- Flash messages -->
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    <div class="alert-message">
+                        {{ message|raw }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        <!-- End flash messages -->
+
         <!-- Page content -->
         {% block body %}{% endblock %}
         <!-- End page content -->
-
+        
         <!-- Footer -->
         <footer class="site-footer bg-light">
             <div class="container">
