@@ -1,6 +1,7 @@
 /* Base */
 html {
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 .font-size-10 {
