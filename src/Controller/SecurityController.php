@@ -108,14 +108,27 @@ class SecurityController extends AbstractController
             ]);
         }
 
+        //Checking if the username submitted corresponds to the active token
+        //If the user is not found we display a warning
+        if ($user->getUsername() !== $form->get('username')->getData()) {
+            $this->addFlash('danger', 'Ce username ne correspond pas au token');
+            return $this->redirectToRoute('app_login');
+        }
+
         //Reseting the token field
         $user->setPasswordToken('');
 
         //Setting the new user's password
         $user->setPassword($passwordHasher->hashPassword($user, $form->get('password')->getData()));
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        //Saving modifications into the database
+        try {
+            $entityManager->persist($user);
+            $entityManager->flush();
+        } catch (\Exception $e) {
+            $this->addFlash('danger', 'Une erreur s\'est produite lors de la réinitialisation du mot de passe.');
+            return $this->redirectToRoute('app_login');
+        }
 
         $this->addFlash('success', 'Mot de passe réinitialisé avec succès');
         return $this->redirectToRoute('app_login');
