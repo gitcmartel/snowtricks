@@ -42,22 +42,28 @@ class SecurityController extends AbstractController
             ]);
         }
 
+        //Fetch the user from the database
         $user = $usersRepository->findOneByUsername($form->get('username')->getData());
 
+        //If the user is not found we diplay a warning message
         if ($user === null) {
             $this->addFlash('danger', 'Un problème est survenu lors de la tentative de renouvellement du mot de passe');
             return $this->redirectToRoute('app_login');
         }
 
+        //Creation of the token and storing it into the database
         $token = $tokenGenerator->generateToken();
         $user->setPasswordToken($token);
         $entityManager->persist($user);
         $entityManager->flush();
 
+        //Creation of the URL that wil be sent to the user by email
         $url = $this->generateUrl('app_reset_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
+        //Creates an array that contains url and user objects
         $context = compact('url', 'user');
 
+        //Send the email to the user address
         $mail->send(
             'mailer@snowtricks.devcm.fr', 
             $user->getEmail(), 
@@ -83,8 +89,10 @@ class SecurityController extends AbstractController
     public function resetPassword(string $token, Request $resquest, UserRepository $userRepository, 
     EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher) : Response
     {
+        //Fetch the user from it's token
         $user = $userRepository->findOneBy(['password_token' => $token]);
 
+        //If the user is not found we display a warning
         if ($user == null) {
             $this->addFlash('danger', 'Ce lien est invalide');
             return $this->redirectToRoute('app_login');
@@ -100,8 +108,10 @@ class SecurityController extends AbstractController
             ]);
         }
 
+        //Reseting the token field
         $user->setPasswordToken('');
 
+        //Setting the new user's password
         $user->setPassword($passwordHasher->hashPassword($user, $form->get('password')->getData()));
 
         $entityManager->persist($user);
