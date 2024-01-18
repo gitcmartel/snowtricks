@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{% endblock %}
+{% block importmap %}{{ importmap('home') }}{% endblock %}
 
 {% block body %}
 
@@ -17,7 +18,11 @@
     </div>
 </div>
 
-<div class="site-section">
+<!-- Scrolling buttons -->
+<button id="scroll-button" class="scroll-button"><i class="fa-solid fa-circle-chevron-down fa-2xl" id="scroll-icon"></i></button>
+<!-- End Scrolling buttons -->
+
+<div class="site-section" id="postList">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-6 mb-4">
@@ -126,4 +131,8 @@
 
     </div>
 </div> <!-- END .site-section -->
+{% endblock %}
+    
+{% block js %}
+
 {% endblock %}
