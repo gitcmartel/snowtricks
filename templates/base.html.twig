@@ -13,8 +13,7 @@
     <!-- {% block stylesheets %}{{ encore_entry_link_tags('app') }}{% endblock %} -->
 
     {% block javascripts %}
-    {% block importmap %}{{ importmap('app') }}{% endblock %}
-    <!--{{ encore_entry_script_tags('app') }}-->
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
 </head>
 
@@ -25,33 +24,34 @@
             <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ path('app_home') }}">Snowtricks</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarColor01">
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="{{ path('app_home') }}">Home
-                                    <span class="visually-hidden">(current)</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Tricks</a>
-                            </li>
-                            <li class="nav-item">
-                                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <div>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarColor01">
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{{ path('app_home') }}">Home
+                                        <span class="visually-hidden">(current)</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Tricks</a>
+                                </li>
+                                <li class="nav-item">
+                                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                                     <a class="nav-link" href="{{ path('app_logout') }}">Sign out</a>
-                                {% else %}
+                                    {% else %}
                                     <a class="nav-link" href="{{ path('app_login') }}">Sign in</a>
-                                {% endif %}
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_subscription') }}">Sign up</a>
-                            </li>
-
-                        </ul>
+                                    {% endif %}
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('app_subscription') }}">Sign up</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -61,12 +61,12 @@
         <!-- Flash messages -->
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="alert alert-{{ label }} alert-dismissible" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                    <div class="alert-message">
-                        {{ message|raw }}
-                    </div>
+            <div class="alert alert-{{ label }} alert-dismissible" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                <div class="alert-message">
+                    {{ message|raw }}
                 </div>
+            </div>
             {% endfor %}
         {% endfor %}
         <!-- End flash messages -->
@@ -74,7 +74,7 @@
         <!-- Page content -->
         {% block body %}{% endblock %}
         <!-- End page content -->
-        
+
         <!-- Footer -->
         <footer class="site-footer bg-light">
             <div class="container">
@@ -151,9 +151,7 @@
         </footer>
         <!-- End footer-->
     </div>
-    {% block js %}
-
-    {% endblock %}
+    {% block js %}{% endblock %}
 </body>
 
 </html>
