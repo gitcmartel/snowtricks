@@ -988,6 +988,21 @@ h1, h2, h3, h4, h5,
   }
 }
 
+.catch-phrase {
+  animation: fadeInMoveIn 0.8s ease-out;
+  padding-top: 15%;
+}
+
+@keyframes fadeInMoveIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 .block-heading-1 span {
   text-transform: uppercase;
   font-size: 12px;
