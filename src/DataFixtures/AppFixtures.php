@@ -39,13 +39,15 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 10; $i++) {
             $tricksGroup = new TricksGroup();
-            $tricksGroup->setName('TrickGroup'.$i);
+            $tricksGroup->setName('TricksGroup'.$i);
             $tricksGroup->setDescription('Squalorem eculei parabat uncosque catenis quisquam Constantio movebantur 
                 et haec paene poenales intendebantur tormenta coopertos maestitiam intendebantur nec absolutum 
                 maestitiam.'.$i);
             $this->addReference('tricksGroup'.$i, $tricksGroup);
             $manager->persist($tricksGroup);
         }
+
+        $manager->flush();
 
         //Creation of 40 tricks
 
@@ -64,8 +66,9 @@ class AppFixtures extends Fixture
                 istam male dicendi licentiam. Tecum, Atratine, agam lenius, quod et pudor tuus moderatur orationi 
                 meae et meum erga te parentemque tuum beneficium tueri debeo.
             '.$i);
-            $this->addReference('tricksGroup'.$i, $tricks);
+            $this->addReference('tricks'.$i, $tricks);
             $manager->persist($tricks);
+            
         }
 
         //Creation of 20 medias
