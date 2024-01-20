@@ -85,12 +85,12 @@ class Tricks
         return $this;
     }
 
-    public function getTricksGroup(): ?group
+    public function getTricksGroup(): ?TricksGroup
     {
         return $this->tricks_group;
     }
 
-    public function setTricksGroup(?group $tricks_group): static
+    public function setTricksGroup(?TricksGroup $tricks_group): static
     {
         $this->tricks_group = $tricks_group;
 
