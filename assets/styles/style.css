@@ -1591,6 +1591,10 @@ h1, h2, h3, h4, h5,
 .post-entry-1 .meta {
   color: #ccc;
 }
+.post-entry-1 img {
+  height: 10rem;
+  width: 10rem;
+}
 .post-entry-1 .post-entry-1-contents {
   background: #fff;
   padding: 20px;
