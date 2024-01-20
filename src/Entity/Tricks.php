@@ -38,6 +38,9 @@ class Tricks
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Media::class, orphanRemoval: true)]
     private Collection $medias;
 
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -153,6 +156,18 @@ class Tricks
                 $media->setTricks(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
