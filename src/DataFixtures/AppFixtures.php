@@ -58,7 +58,7 @@ class AppFixtures extends Fixture
             $tricks->setUser($user);
             $tricks->setTricksGroup($tricksGroup);
             $tricks->setName('Tricks'.$i);
-            $tricks->setImage('assets/images/img_1.jpg');
+            $tricks->setImage('images/img_1.jpg');
             $tricks->setDescription('
                 Quam quidem partem accusationis admiratus sum et moleste tuli potissimum esse Atratino datam. 
                 Neque enim decebat neque aetas illa postulabat neque, id quod animadvertere poteratis, pudor 
@@ -78,7 +78,7 @@ class AppFixtures extends Fixture
             $media = new Media();
             $tricks = $this->getReference('tricks'.$i);
             $media->setTricks($tricks);
-            $media->setPath('assets/images/img_'.rand(2, 5).'.jpg');
+            $media->setPath('images/img_'.rand(2, 5).'.jpg');
             $media->setType('Image');
             $manager->persist($media);
         }
