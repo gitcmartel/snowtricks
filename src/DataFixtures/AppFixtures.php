@@ -47,9 +47,9 @@ class AppFixtures extends Fixture
             $manager->persist($tricksGroup);
         }
 
-        //Creation of 10 tricks
+        //Creation of 40 tricks
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $tricks = new Tricks();
             $user = $this->getReference('user'.rand(0, 9));
             $tricksGroup = $this->getReference('tricksGroup'.rand(0, 9));
@@ -68,20 +68,20 @@ class AppFixtures extends Fixture
             $manager->persist($tricks);
         }
 
-        //Creation of 10 medias
+        //Creation of 20 medias
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $media = new Media();
-            $tricks = $this->getReference('tricks'.rand(0, 9));
+            $tricks = $this->getReference('tricks'.$i);
             $media->setTricks($tricks);
             $media->setPath('assets/images/img_1.jpg');
             $media->setType('Image');
             $manager->persist($media);
         }
 
-        //Creation of 10 messages
+        //Creation of 20 messages
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $message = new Message();
             $user = $this->getReference('user'.rand(0, 9));
             $message->setUser($user);
@@ -96,6 +96,7 @@ class AppFixtures extends Fixture
                 theologi veteres fingentes Iustitiae filiam ex abdita quadam aeternitate tradunt omnia despectare 
                 terrena.
             '.$i);
+            $manager->persist($message);
         }
 
         $manager->flush();
