@@ -60,7 +60,7 @@
 }
 
 .site-section {
-  padding: 7rem 0;
+  padding: 5rem 0;
   @include media-breakpoint-down(md) {
     padding: 3rem 0;
   }
@@ -720,12 +720,11 @@
     color: #ccc;
   }
   img {
-    height: 10rem;
-    width: 10rem;
+    border-radius:5px;
   }
   .post-entry-1-contents {
     background: $white;
-    padding: 20px;
+    padding: 10px;
     h2 {
       font-size: 22px;
       margin-bottom: 20px;

@@ -981,7 +981,7 @@ h1, h2, h3, h4, h5,
 }
 
 .site-section {
-  padding: 7rem 0;
+  padding: 5rem 0;
 }
 @media (max-width: 991.98px) {
   .site-section {
@@ -1592,12 +1592,11 @@ h1, h2, h3, h4, h5,
   color: #ccc;
 }
 .post-entry-1 img {
-  height: 10rem;
-  width: 10rem;
+  border-radius: 5px;
 }
 .post-entry-1 .post-entry-1-contents {
   background: #fff;
-  padding: 20px;
+  padding: 10px;
 }
 .post-entry-1 .post-entry-1-contents h2 {
   font-size: 22px;
