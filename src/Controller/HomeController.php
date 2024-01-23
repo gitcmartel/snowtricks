@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TricksRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class HomeController extends AbstractController
 {
@@ -33,9 +31,9 @@ class HomeController extends AbstractController
 
             $tricks = $tricksRepository->findTricksByPage($page, 15);
 
-            $data = $serializer->serialize($tricks, 'json');
-
-            return new JsonResponse($data, 200, [], true);
+            return $this->render('_partials/_tricks.html.twig', [
+                'tricksList' => $tricks
+            ]);
         }
 
         throw $this->createNotFoundException('Erreur lors du chargement des tricks');
