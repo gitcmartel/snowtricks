@@ -1,6 +1,7 @@
 /* Base */
 html {
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 .font-size-10 {
@@ -296,6 +297,7 @@ body {
 a {
   transition: 0.3s all ease;
   text-decoration: none;
+  color: rgba(0, 0, 0, 0.7);
 }
 a:hover {
   text-decoration: none;
@@ -552,12 +554,6 @@ h1, h2, h3, h4, h5,
   top: 0;
   width: 100%;
   background: white;
-}
-@media (max-width: 991.98px) {
-  .site-navbar {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
 }
 .site-navbar .toggle-button {
   position: absolute;
@@ -980,7 +976,7 @@ h1, h2, h3, h4, h5,
 }
 
 .site-section {
-  padding: 7rem 0;
+  padding: 5rem 0;
 }
 @media (max-width: 991.98px) {
   .site-section {
@@ -988,6 +984,24 @@ h1, h2, h3, h4, h5,
   }
 }
 
+.catch-phrase {
+  animation: fadeInMoveIn 0.8s ease-out;
+  padding-top: 15%;
+}
+.catch-phrase p {
+  font-size: 1.2rem;
+}
+
+@keyframes fadeInMoveIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 .block-heading-1 span {
   text-transform: uppercase;
   font-size: 12px;
@@ -1575,9 +1589,12 @@ h1, h2, h3, h4, h5,
 .post-entry-1 .meta {
   color: #ccc;
 }
+.post-entry-1 img {
+  border-radius: 5px;
+}
 .post-entry-1 .post-entry-1-contents {
   background: #fff;
-  padding: 20px;
+  padding: 10px;
 }
 .post-entry-1 .post-entry-1-contents h2 {
   font-size: 22px;
@@ -2245,4 +2262,37 @@ h1, h2, h3, h4, h5,
   background: rgba(239, 186, 108, 0.1);
   bottom: -20px;
   right: -20px;
+}
+
+/* Scrolling buttons */
+.scroll-button {
+  position: fixed;
+  bottom: 20px;
+  right: 1rem;
+  z-index: 99;
+  border: none;
+  outline: none;
+  color: #6a7da0;
+  background-color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.scroll-button:hover {
+  color: #2c3e50;
+}
+
+/* Spinner */
+#spinner-container {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
 }/*# sourceMappingURL=style.css.map */

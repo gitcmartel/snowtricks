@@ -26,7 +26,7 @@ class Tricks
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
@@ -37,6 +37,9 @@ class Tricks
 
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Media::class, orphanRemoval: true)]
     private Collection $medias;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -73,24 +76,24 @@ class Tricks
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getTricksGroup(): ?group
+    public function getTricksGroup(): ?TricksGroup
     {
         return $this->tricks_group;
     }
 
-    public function setTricksGroup(?group $tricks_group): static
+    public function setTricksGroup(?TricksGroup $tricks_group): static
     {
         $this->tricks_group = $tricks_group;
 
@@ -153,6 +156,18 @@ class Tricks
                 $media->setTricks(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

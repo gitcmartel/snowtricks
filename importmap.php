@@ -18,8 +18,9 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
-    'main' => [
-        'path' => './assets/js/main.js',
+    'home' => [
+        'path' => './assets/js/home.js',
+        'entrypoint' => true,
     ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
@@ -39,67 +40,5 @@ return [
     'bootstrap/dist/css/bootstrap.min.css' => [
         'version' => '5.3.2',
         'type' => 'css',
-    ],
-    'jquery' => [
-        'version' => '3.7.1',
-    ],
-    'jquery-ui' => [
-        'version' => '1.13.2',
-    ],
-    'jquery-migrate' => [
-        'version' => '3.4.1',
-    ],
-    'jquery.animate-number' => [
-        'version' => '0.0.14',
-    ],
-    'aos' => [
-        'version' => '2.3.4',
-    ],
-    'jquery-countdown' => [
-        'version' => '2.2.0',
-    ],
-    'jquery-easing' => [
-        'version' => '0.0.1',
-    ],
-    'magnific-popup' => [
-        'version' => '1.1.0',
-    ],
-    'magnific-popup/dist/magnific-popup.min.css' => [
-        'version' => '1.1.0',
-        'type' => 'css',
-    ],
-    'stellar' => [
-        'version' => '0.0.0',
-    ],
-    'fancybox' => [
-        'version' => '3.0.1',
-    ],
-    'sticky' => [
-        'version' => '0.8.0',
-    ],
-    'es6-promise' => [
-        'version' => '1.0.0',
-    ],
-    'typemap' => [
-        'version' => '1.1.0',
-    ],
-    'mediaelement' => [
-        'version' => '7.0.2',
-    ],
-    'owl.carousel' => [
-        'version' => '2.3.4',
-    ],
-    'owl.carousel/dist/assets/owl.carousel.min.css' => [
-        'version' => '2.3.4',
-        'type' => 'css',
-    ],
-    'slick' => [
-        'version' => '1.12.2',
-    ],
-    'typed.js' => [
-        'version' => '2.1.0',
-    ],
-    'bootstrap-datepicker' => [
-        'version' => '1.10.0',
-    ],
+    ]
 ];

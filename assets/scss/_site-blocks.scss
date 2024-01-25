@@ -60,13 +60,31 @@
 }
 
 .site-section {
-  padding: 7rem 0;
+  padding: 5rem 0;
   @include media-breakpoint-down(md) {
     padding: 3rem 0;
   }
 }
 
+.catch-phrase {
+  animation: fadeInMoveIn .8s ease-out;
+  padding-top:15%;
 
+  p { 
+    font-size: 1.2rem;
+  }
+}
+
+@keyframes fadeInMoveIn {
+  from {
+      opacity: 0;
+      transform: translateX(-30%);
+  }
+  to {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
 
 .block-heading-1 {
   span {
@@ -705,9 +723,12 @@
   .meta {
     color: #ccc;
   }
+  img {
+    border-radius:5px;
+  }
   .post-entry-1-contents {
     background: $white;
-    padding: 20px;
+    padding: 10px;
     h2 {
       font-size: 22px;
       margin-bottom: 20px;
@@ -1088,8 +1109,6 @@
   }
 }
 
-
-
 .bg-img-1 {
   background-size: cover;
   background-position: center;
@@ -1097,9 +1116,7 @@
   width: 50%;
   height: 350px;
 }
-.social {
 
-}
 
 .block_75651 {
   padding: 30px;

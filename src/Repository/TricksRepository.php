@@ -21,6 +21,15 @@ class TricksRepository extends ServiceEntityRepository
         parent::__construct($registry, Tricks::class);
     }
 
+    public function findTricksByPage($page = 1, $pageSize = 15)
+    {
+        $query = $this->createQueryBuilder('trickspack')
+            ->orderBy('trickspack.id', 'DESC')
+            ->setFirstResult(($page - 1) * $pageSize)
+            ->setMaxResults($pageSize);
+
+        return $query->getQuery()->getResult();
+    }
 //    /**
 //     * @return Tricks[] Returns an array of Tricks objects
 //     */

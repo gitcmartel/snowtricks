@@ -1,0 +1,17 @@
+.scroll-button {
+    position: fixed;
+    bottom: 20px;
+    right: 1rem;
+    z-index: 99;
+    border: none;
+    outline: none;
+    color: #6a7da0;
+    background-color: rgb(255, 255, 255, 0.8);
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.scroll-button:hover {
+    color: #2c3e50;
+}
