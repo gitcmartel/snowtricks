@@ -1,20 +1,86 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TricksController!{% endblock %}
+{% block title %}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<!-- Hero -->
+<div class="ftco-blocks-cover-1">
+    <div class="site-section-cover overlay" style="background-image: url('{{ asset(tricks.image) }}')">
+        <div class="container">
+            <div class="row catch-phrase">
+                <div class="col-md-5">
+                    <h1 class="mb-3 text-white">{{ tricks.name }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End hero -->
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/snowtricks/src/Controller/TricksController.php'|file_link(0) }}">src/Controller/TricksController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/snowtricks/templates/tricks/index.html.twig'|file_link(0) }}">templates/tricks/index.html.twig</a></code></li>
-    </ul>
+<div class="site-section">
+    <div class="container">
+        <div class="row mt-5 pt-5">
+            <!-- Tricks description -->
+            <div class="col-md-6">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia facere sed non necessitatibus
+                    pariatur, dignissimos rem hic eligendi assumenda quasi, sequi voluptatum voluptatibus praesentium
+                    dolorum! Vero necessitatibus nemo cumque, a ut tempore. Accusamus perferendis tenetur molestiae
+                    soluta architecto consequuntur laudantium, iusto sed, asperiores necessitatibus molestias libero
+                    deserunt mollitia quas consequatur.</p>
+                <p>Totam sunt nam, quos cum officiis, ab incidunt doloribus delectus, quas quam excepturi. Id, eaque
+                    placeat distinctio consectetur enim reiciendis alias pariatur atque tempora ea ab dolorem earum
+                    exercitationem libero repellat modi voluptate! Fugit architecto magnam ea sunt minima asperiores.
+                    Numquam illum, error expedita vel debitis excepturi, voluptatem laborum reprehenderit!</p>
+                <p>Quo pariatur dolores commodi quas, fugit tenetur quam aperiam veniam. Veniam dolorum ipsum facilis
+                    sint sunt, sequi, ex similique numquam neque sed reprehenderit veritatis distinctio dolorem debitis,
+                    ducimus explicabo dolore. Cumque placeat beatae sint laboriosam molestias nobis possimus porro
+                    necessitatibus est delectus, asperiores at, sed aspernatur perferendis temporibus, alias
+                    voluptatibus.</p>
+                <p>Vitae consectetur dolor delectus ipsa rem, eos. Veritatis vero facilis, illo deserunt in aliquam
+                    dolore ex consequuntur facere laborum tempore provident voluptate porro voluptatem suscipit iure
+                    praesentium sint temporibus, reprehenderit. Nisi reprehenderit molestias sed obcaecati nostrum,
+                    dolor illum, debitis quis, quisquam eveniet totam. Eaque, nobis. Tenetur deleniti amet, atque
+                    fugiat.</p>
+                <p>Illo a voluptate nam amet explicabo officia doloribus? At harum mollitia doloremque deserunt repellat
+                    perspiciatis in aliquam quos cumque, deleniti exercitationem. Placeat soluta laboriosam ullam dicta
+                    ducimus, in atque temporibus molestias distinctio dolorum, tenetur rerum velit cumque asperiores id
+                    earum corporis, neque officiis libero voluptatem! Commodi nostrum iste tenetur, ea.</p>
+            </div>
+            <!-- End of tricks description -->
+
+            <div class="col-md-6">
+                <!-- Caroussel -->
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% if medias | length> 0 %}
+                            {% set isFirstMedia = true %}
+                            {% for media in medias %}
+                                <div class="carousel-item {% if isFirstMedia %} active{% endif %}">
+                                    <img src="{{ asset(media.path) }}" class="d-block w-100" alt="...">
+                                </div>
+                                {% set isFirstMedia = false %}
+                            {% endfor %}
+                        {% else %}
+                            <div class="carousel-item active">
+                                <img src="{{ asset(tricks.image) }}" class="d-block w-100" alt="...">
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 {% endblock %}
