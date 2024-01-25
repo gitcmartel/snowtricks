@@ -69,6 +69,10 @@
 .catch-phrase {
   animation: fadeInMoveIn .8s ease-out;
   padding-top:15%;
+
+  p { 
+    font-size: 1.2rem;
+  }
 }
 
 @keyframes fadeInMoveIn {
