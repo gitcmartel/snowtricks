@@ -63,6 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         'message' => 'Votre mot de passe n\'est pas assez fort. 
         Ajoutez des chiffres, majuscules, minuscules et caractères spéciaux.'
     ])]
+    #[Assert\NotBlank([
+        'message' => 'Le champ ne peut pas être vide'
+    ])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: true)]
