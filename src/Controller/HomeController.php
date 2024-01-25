@@ -24,18 +24,13 @@ class HomeController extends AbstractController
     }
 
     #[Route('/home/{page}', name: 'app_home_load_more')]
-    public function loadMoreTricks(Request $request, TricksRepository $tricksRepository, SerializerInterface $serializer) 
+    public function loadMoreTricks($page, Request $request, TricksRepository $tricksRepository) 
     {
-        if ($request->isXmlHttpRequest()) {
-            $page = $request->query->getInt('page', 1);
+        $tricks = $tricksRepository->findTricksByPage($page, 15);
+        return $this->render('_partials/_tricks.html.twig', [
+            'tricksList' => $tricks
+        ]);
 
-            $tricks = $tricksRepository->findTricksByPage($page, 15);
-
-            return $this->render('_partials/_tricks.html.twig', [
-                'tricksList' => $tricks
-            ]);
-        }
-
-        throw $this->createNotFoundException('Erreur lors du chargement des tricks');
+        //throw $this->createNotFoundException('Erreur lors du chargement des tricks');
     }
 }
