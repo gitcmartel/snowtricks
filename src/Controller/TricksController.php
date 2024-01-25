@@ -15,7 +15,7 @@ class TricksController extends AbstractController
     {
         //Fetching the tricks and media data
         $tricks = $trickRepository->findOneById($tricksId);
-        $media = $mediaRepository->findByTricks($tricksId);
+        $medias = $mediaRepository->findByTricks($tricksId);
 
         if ($tricks == null) {
             return $this->redirectToRoute('app_not_found');
@@ -24,7 +24,7 @@ class TricksController extends AbstractController
         return $this->render('tricks/index.html.twig', [
             'controller_name' => 'TricksController',
             'tricks' => $tricks, 
-            'media' => $media
+            'medias' => $medias
         ]);
     }
 }
