@@ -4,8 +4,8 @@
         <a href="single.html">
             <img src="{{ asset(tricks.image) }}" alt="Image" class="img-fluid">
         </a>
-        <div class="post-entry-1-contents d-flex justify-content-between">
-            <h2><a href="single.html">{{ tricks.name }}</a></h2>
+        <div class="post-entry-1-contents d-flex flex-wrap justify-content-between">
+            <h5><a href="single.html">{{ tricks.name }}</a></h5>
             <div>
                 {% if is_granted('ROLE_USER') %}
                 <a href=""><i class="fa-solid fa-pencil me-3"></i></a>

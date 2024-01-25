@@ -297,6 +297,7 @@ body {
 a {
   transition: 0.3s all ease;
   text-decoration: none;
+  color: rgba(0, 0, 0, 0.7);
 }
 a:hover {
   text-decoration: none;
@@ -986,6 +987,9 @@ h1, h2, h3, h4, h5,
 .catch-phrase {
   animation: fadeInMoveIn 0.8s ease-out;
   padding-top: 15%;
+}
+.catch-phrase p {
+  font-size: 1.2rem;
 }
 
 @keyframes fadeInMoveIn {
