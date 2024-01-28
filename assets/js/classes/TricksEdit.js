@@ -3,14 +3,16 @@ export default class TricksEdit {
     InputHeroBackgroundImage;
     hero;
     functionNameToExecute;
+    modal;
 
-    constructor(modalMessage) {
+    constructor(modalDialog) {
         this.modalYesButton = document.getElementById("modalYesButton");
 
         this.deleteHeroImageButton = document.getElementById("deleteHeroImageButton");
         this.hero = document.getElementById("hero");
         this.InputHeroBackgroundImage = document.getElementById("InputHeroBackgroundImage");
-        modalMessage.setModalMessage("Confirmez-vous la suppression de l'image ?");
+        this.modal = modalDialog;
+        this.modal.setModalMessage("Confirmez-vous la suppression de l'image ?");
         
         // Adding listeners
         this.modalYesButton.addEventListener("click", this.executeFunction.bind(this));
@@ -34,5 +36,6 @@ export default class TricksEdit {
     deleteHeroImage() {
         this.hero.style.backgroundImage = "";
         this.InputHeroBackgroundImage.value = "";
+        this.modal.hideModal();
     }
 }
