@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+{% block importmap %}{{ importmap(['app', 'tricks']) }}{% endblock %}
+
+{% block body %}
+<!-- Hero -->
+<div class="ftco-blocks-cover-1">
+    <div class="site-section-cover overlay" style="background-image: url('{{ asset(tricks.image) }}')" id="hero">
+        <div class="container">
+            <div class="tricks-edit-buttons-hero d-flex justify-content-end">
+                <a href="" class="me-2">
+                    <i class="fa-solid fa-pencil me-3"></i>
+                </a>
+                <a href="" type="button" data-bs-toggle="modal" id="deleteHeroImageButton" data-bs-target="#staticBackdrop" data-function="deleteHeroImage">
+                    <i class="fa-solid fa-trash-can"></i>
+                </a>
+            </div>
+            <div class="row catch-phrase">
+                <div class="col-md-5">
+                    <h1 class="mb-3 text-white">{{ tricks.name }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End hero -->
+
+<form action="">
+    <input type="hidden" id="InputHeroBackgroundImage" value="'{{ asset(tricks.image) }}'">
+</form>
+{% endblock %}
