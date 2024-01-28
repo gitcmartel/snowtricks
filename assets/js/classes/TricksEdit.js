@@ -4,13 +4,14 @@ export default class TricksEdit {
     hero;
     functionNameToExecute;
 
-    constructor() {
+    constructor(modalMessage) {
         this.modalYesButton = document.getElementById("modalYesButton");
 
         this.deleteHeroImageButton = document.getElementById("deleteHeroImageButton");
         this.hero = document.getElementById("hero");
         this.InputHeroBackgroundImage = document.getElementById("InputHeroBackgroundImage");
-
+        modalMessage.setModalMessage("Confirmez-vous la suppression de l'image ?");
+        
         // Adding listeners
         this.modalYesButton.addEventListener("click", this.executeFunction.bind(this));
         this.deleteHeroImageButton.addEventListener("click", this.setFunctionNameToExecute.bind(this));
