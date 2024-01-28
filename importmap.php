@@ -22,6 +22,10 @@ return [
         'path' => './assets/js/home.js',
         'entrypoint' => true,
     ],
+    'tricks' => [
+        'path' => './assets/js/tricks.js',
+        'entrypoint' => true,
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
