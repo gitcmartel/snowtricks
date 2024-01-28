@@ -2238,4 +2238,28 @@ h1, h2, h3, h4, h5,
   background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
+}
+
+/* Tricks */
+.carousel-container {
+  overflow: hidden;
+}
+
+.carousel-inner {
+  height: auto;
+}
+
+.carousel-item.active {
+  display: block;
+}
+
+.carousel-item {
+  display: none;
+}
+
+.tricks-edit-buttons-hero {
+  position: relative;
+  z-index: 2;
+  top: 2rem;
+  right: 2rem;
 }/*# sourceMappingURL=style.css.map */
