@@ -34,6 +34,7 @@ export default class TricksScroll
 
         const xhr = new XMLHttpRequest();
         xhr.open('GET', '/home/' + this.page, true);
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
