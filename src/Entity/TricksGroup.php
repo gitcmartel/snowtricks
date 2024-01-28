@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\GroupRepository;
+use App\Repository\TricksGroupRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
-#[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[ORM\Entity(repositoryClass: TricksGroupRepository::class)]
 #[ORM\Table(name: 'tricks_group')]
 #[Broadcast]
 class TricksGroup
