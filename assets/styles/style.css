@@ -2262,4 +2262,19 @@ h1, h2, h3, h4, h5,
   z-index: 2;
   top: 2rem;
   right: 2rem;
+}
+
+.edit-icons {
+  width: 6rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.edit-icons-color {
+  color: white;
+  transition: color 0.3s;
+}
+.edit-icons-color:hover {
+  color: #18bc9c;
 }/*# sourceMappingURL=style.css.map */
