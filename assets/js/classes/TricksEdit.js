@@ -13,10 +13,12 @@ export default class TricksEdit {
         this.InputHeroBackgroundImage = document.getElementById("InputHeroBackgroundImage");
         this.modal = modalDialog;
         this.modal.setModalMessage("Confirmez-vous la suppression de l'image ?");
+        this.imagePath = document.getElementById("imagePath");
         
         // Adding listeners
         this.modalYesButton.addEventListener("click", this.executeFunction.bind(this));
         this.deleteHeroImageButton.addEventListener("click", this.setFunctionNameToExecute.bind(this));
+        this.imagePath.addEventListener("change", this.displayImageTricks.bind(this));
     }
 
     setFunctionNameToExecute() {
@@ -30,6 +32,17 @@ export default class TricksEdit {
             this[this.functionNameToExecute].call(this); 
         } else {
             console.error("La fonction " + this.functionNameToExecute + " n'existe pas ou n'est pas une fonction valide.");
+        }
+    }
+
+    displayImageTricks (event) {
+        // e.files contient un objet FileList
+        const [picture] = event.target.files;
+    
+        // "picture" est un objet File
+        if (picture) {
+          // On change l"URL de l"image
+          this.hero.style.backgroundImage = `url(${URL.createObjectURL(picture)})`;
         }
     }
 
