@@ -8,9 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TricksRepository;
-use App\Entity\Tricks;
 use App\Repository\MediaRepository;
+use App\Repository\TricksGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\ImageService;
 
 class TricksController extends AbstractController
 {
@@ -33,26 +34,39 @@ class TricksController extends AbstractController
     }
 
     #[Route('/tricks-edit/{tricksId}', name: 'app_tricks_edit')]
-    public function edit($tricksId, TricksRepository $tricksRepository, MediaRepository $mediaRepository, Request $request, 
-        EntityManagerInterface $entityManager) 
+    public function edit($tricksId, TricksRepository $tricksRepository, MediaRepository $mediaRepository, TricksGroupRepository $tricksGroupRepository, 
+        Request $request, EntityManagerInterface $entityManager) 
     {
-        $tricks = new Tricks;
+        //Fetching data
+        $tricks = $tricksRepository->findOneById($tricksId);
+        $groups = $tricksGroupRepository->findAll();
 
         $form = $this->createForm(TricksFormType::class, $tricks);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form->get('tricksImage')->getData();
+
+            //Move the uploaded image 
+            if ($uploadedFile == true) {
+                $imageService = new ImageService($this->getParameter('kernel.project_dir') . '/assets/images/tricks');
+                $newTricksImageFileName = $imageService->moveUploadedFile($uploadedFile);
+                $tricks->setImage('images/tricks/' . $newTricksImageFileName);
+            }
+
+            //Saving data
+            $entityManager->persist($tricks);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_home');
         }
 
-        //Fetching data
-        $tricks = $tricksRepository->findOneById($tricksId);
-
         return $this->render('tricks/tricks.html.twig', [
             'controller_name' => 'tricksController', 
-            'tricks' => $tricks
+            'tricks' => $tricks, 
+            'groups' => $groups, 
+            'formTricks' => $form->createView(),
         ]);
     }
 }
