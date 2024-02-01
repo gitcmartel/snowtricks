@@ -2259,16 +2259,29 @@ h1, h2, h3, h4, h5,
 
 .tricks-edit-buttons-hero {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   top: 2rem;
   right: 2rem;
 }
 
-.edit-icons {
+.edit-buttons-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.edit-icons, .edit-icons-media {
   width: 6rem;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
   border-radius: 10px;
+}
+
+.edit-icons-media {
+  padding: 5px 10px 5px 10px;
 }
 
 .edit-icons-color {
@@ -2277,4 +2290,30 @@ h1, h2, h3, h4, h5,
 }
 .edit-icons-color:hover {
   color: #18bc9c;
+}
+
+.media-row {
+  height: auto;
+}
+
+.media {
+  max-height: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.media img, .media video {
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.tricks-description {
+  height: 17rem;
+}
+
+#seeMediasButton {
+  position: relative;
+  z-index: 3;
 }/*# sourceMappingURL=style.css.map */
