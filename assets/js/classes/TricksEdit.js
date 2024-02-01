@@ -4,6 +4,7 @@ export default class TricksEdit {
     hero;
     functionNameToExecute;
     modal;
+    mediaList;
 
     constructor(modalDialog) {
         this.modalYesButton = document.getElementById("modalYesButton");
@@ -11,16 +12,23 @@ export default class TricksEdit {
         this.deleteHeroImageButton = document.getElementById("deleteHeroImageButton");
         this.hero = document.getElementById("hero");
         this.InputHeroBackgroundImage = document.getElementById("InputHeroBackgroundImage");
-        this.modal = modalDialog;
+        this.modal = modalDialog; 
         this.modal.setModalMessage("Confirmez-vous la suppression de l'image ?");
-        this.imagePath = document.getElementById("imagePath");
+        this.imagePath = document.getElementById("tricksImage");
         
+        this.seeMediasButton = document.getElementById("seeMediasButton");
+        this.mediaList = document.getElementById("mediaList");
+
         // Adding listeners
         this.modalYesButton.addEventListener("click", this.executeFunction.bind(this));
         this.deleteHeroImageButton.addEventListener("click", this.setFunctionNameToExecute.bind(this));
         this.imagePath.addEventListener("change", this.displayImageTricks.bind(this));
+        this.seeMediasButton.addEventListener("click", this.showTricks.bind(this));
     }
 
+    /**
+     * Get the js function name from the dom
+     */
     setFunctionNameToExecute() {
         this.functionNameToExecute = this.deleteHeroImageButton.getAttribute("data-function");
     }
@@ -35,6 +43,10 @@ export default class TricksEdit {
         }
     }
 
+    /**
+     * Display the uploaded tricks image in the hero section
+     * @param {*} event 
+     */
     displayImageTricks (event) {
         // e.files contient un objet FileList
         const [picture] = event.target.files;
@@ -46,9 +58,18 @@ export default class TricksEdit {
         }
     }
 
+    /**
+     * Deletes the hero image
+     */
     deleteHeroImage() {
         this.hero.style.backgroundImage = "";
-        this.InputHeroBackgroundImage.value = "";
         this.modal.hideModal();
+    }
+
+    /**
+     * Show the list of tricks on mobile devices
+     */
+    showTricks() {
+        this.mediaList.classList.remove("d-none");
     }
 }
