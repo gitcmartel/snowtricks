@@ -1,46 +1,30 @@
 export default class TricksEdit {
-    deleteHeroImageButton;
-    InputHeroBackgroundImage;
-    hero;
-    functionNameToExecute;
-    modal;
-    mediaList;
+
+    deleteButtons;
 
     constructor(modalDialog) {
-        this.modalYesButton = document.getElementById("modalYesButton");
+        this.deleteButtons = document.querySelectorAll('.delete-hero-image, .delete-media');
 
-        this.deleteHeroImageButton = document.getElementById("deleteHeroImageButton");
-        this.hero = document.getElementById("hero");
-        this.InputHeroBackgroundImage = document.getElementById("InputHeroBackgroundImage");
-        this.modal = modalDialog; 
-        this.modal.setModalMessage("Confirmez-vous la suppression de l'image ?");
-        this.imagePath = document.getElementById("tricksImage");
-        
-        this.seeMediasButton = document.getElementById("seeMediasButton");
-        this.mediaList = document.getElementById("mediaList");
+        this.deleteButtons.forEach((button) => {
+            button.addEventListener('click', () => {
 
-        // Adding listeners
-        this.modalYesButton.addEventListener("click", this.executeFunction.bind(this));
-        this.deleteHeroImageButton.addEventListener("click", this.setFunctionNameToExecute.bind(this));
-        this.imagePath.addEventListener("change", this.displayImageTricks.bind(this));
-        this.seeMediasButton.addEventListener("click", this.showTricks.bind(this));
-    }
+                modalDialog.setModalMessage("Confirmez-vous la suppression de l'image ?");
+                modalDialog.showModal();
 
-    /**
-     * Get the js function name from the dom
-     */
-    setFunctionNameToExecute() {
-        this.functionNameToExecute = this.deleteHeroImageButton.getAttribute("data-function");
-    }
+                document.querySelector('#modalYesButton').addEventListener('click', () => {
+                    modalDialog.hideModal();
 
-    executeFunction() {
-        // Checks if the function name exists in the class or globally
-        if (typeof this[this.functionNameToExecute] === "function") {
-            // Execute the function
-            this[this.functionNameToExecute].call(this); 
-        } else {
-            console.error("La fonction " + this.functionNameToExecute + " n'existe pas ou n'est pas une fonction valide.");
-        }
+                    if (button.classList.contains('delete-hero-image')) {
+                        this.deleteHeroImage();
+                    } else if (button.classList.contains('delete-media')) {
+                        const mediaId = button.getAttribute('data-media');
+                        this.deleteMedia(mediaId);
+                    } else if (button.classList.contains('delete-tricks')) {
+                        this.deleteTricks();
+                    }
+                });
+            });
+        });
     }
 
     /**
@@ -62,8 +46,31 @@ export default class TricksEdit {
      * Deletes the hero image
      */
     deleteHeroImage() {
-        this.hero.style.backgroundImage = "";
-        this.modal.hideModal();
+        const hero = document.getElementById("hero");
+        hero.style.backgroundImage = "";
+    }
+
+    /**
+     * Deletes a Media
+     */
+    deleteMedia(mediaId) {
+        const media = document.getElementById("media" + mediaId);
+        const formTricks = document.getElementById("formTricks");
+        var input = document.createElement('input');
+        input.setAttribute('name', 'deleteMedia[]');
+        input.setAttribute('id', 'deleteMedia[]');
+        input.setAttribute('value', mediaId);
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('form', 'formTricks');
+        formTricks.appendChild(input);
+        media.classList.add("d-none");
+    }
+
+    /**
+     * 
+     */
+    deleteTricks() {
+
     }
 
     /**
