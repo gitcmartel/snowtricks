@@ -7,11 +7,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Tricks;
 use App\Repository\TricksRepository;
 use App\Repository\MediaRepository;
 use App\Repository\TricksGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\ImageService;
+use App\Utils\Image;
 
 class TricksController extends AbstractController
 {
@@ -37,9 +38,9 @@ class TricksController extends AbstractController
     public function edit($tricksId, TricksRepository $tricksRepository, MediaRepository $mediaRepository, TricksGroupRepository $tricksGroupRepository, 
         Request $request, EntityManagerInterface $entityManager) 
     {
-        //Fetching data
-        $tricks = $tricksRepository->findOneById($tricksId);
-        $groups = $tricksGroupRepository->findAll();
+        //Delete and edit variables
+        $deleteMedia = [];
+        $tricks = new Tricks();
 
         $form = $this->createForm(TricksFormType::class, $tricks);
 
@@ -50,8 +51,8 @@ class TricksController extends AbstractController
 
             //Move the uploaded image 
             if ($uploadedFile == true) {
-                $imageService = new ImageService($this->getParameter('kernel.project_dir') . '/assets/images/tricks');
-                $newTricksImageFileName = $imageService->moveUploadedFile($uploadedFile);
+                $image = new Image($this->getParameter('kernel.project_dir') . '/assets/images/tricks');
+                $newTricksImageFileName = $image->moveUploadedFile($uploadedFile);
                 $tricks->setImage('images/tricks/' . $newTricksImageFileName);
             }
 
@@ -62,10 +63,15 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
+        //Fetching data
+        $tricks = $tricksRepository->findOneById($tricksId);
+        $groups = $tricksGroupRepository->findAll();
+
         return $this->render('tricks/tricks.html.twig', [
             'controller_name' => 'tricksController', 
             'tricks' => $tricks, 
-            'groups' => $groups, 
+            'groups' => $groups,
+            'deleteMedia' => $deleteMedia,  
             'formTricks' => $form->createView(),
         ]);
     }
