@@ -12,6 +12,10 @@ export default class ModalMessage
         this.modalMessage.innerHTML = message;
     }
 
+    showModal() {
+        this.modal.show();
+    }
+
     hideModal() {
         this.modal.hide();
     }
