@@ -12,7 +12,7 @@ use App\Repository\TricksRepository;
 use App\Repository\MediaRepository;
 use App\Repository\TricksGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Utils\Image;
+use App\Service\ImageService;
 
 class TricksController extends AbstractController
 {
@@ -36,10 +36,11 @@ class TricksController extends AbstractController
 
     #[Route('/tricks-edit/{tricksId}', name: 'app_tricks_edit')]
     public function edit($tricksId, TricksRepository $tricksRepository, MediaRepository $mediaRepository, TricksGroupRepository $tricksGroupRepository, 
-        Request $request, EntityManagerInterface $entityManager) 
+        Request $request, EntityManagerInterface $entityManager, ImageService $imageService) 
     {
         //Delete and edit variables
         $deleteMedia = [];
+        $updateMedia = [];
         $tricks = new Tricks();
 
         $form = $this->createForm(TricksFormType::class, $tricks);
@@ -51,8 +52,7 @@ class TricksController extends AbstractController
 
             //Move the uploaded image 
             if ($uploadedFile == true) {
-                $image = new Image($this->getParameter('kernel.project_dir') . '/assets/images/tricks');
-                $newTricksImageFileName = $image->moveUploadedFile($uploadedFile);
+                $newTricksImageFileName = $imageService->moveUploadedFile($uploadedFile);
                 $tricks->setImage('images/tricks/' . $newTricksImageFileName);
             }
 
