@@ -54,9 +54,9 @@
                     <div class="edit-buttons-container">
                         <div class="w-100 d-flex justify-content-end">
                             <div class="edit-icons-media d-flex justify-content-evenly">
-                                <a href="" type="button">
+                                <label for="tricksImage" role="button">
                                     <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
-                                </a>
+                                </label>
                                 <input type="file" accept=".png, .jpeg, .jpg, .svg" maxsize="2M" class="form-control d-none" name="tricksImage"
                                 id="tricksImage" value="">
                                 <div type="button"  class="delete-media" data-media="{{ media.id }}" data-message="Confirmez-vous la suppression du media ?">
@@ -67,6 +67,15 @@
                     </div>
                 </div>
                 {% endfor %}
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label for="{{ formTricks.medias.vars.id }}">
+                            <i class="fa fa-plus"></i> {{ form_label(formTricks.medias) }}
+                        </label>
+                        {{ form_widget(formTricks.medias, {'attr': {'class': "form-control d-none"}} )}}
+                        <ul id="fileList"></ul>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
