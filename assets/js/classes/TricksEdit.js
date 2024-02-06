@@ -4,6 +4,7 @@ export default class TricksEdit {
 
     constructor(modalDialog) {
         this.deleteButtons = document.querySelectorAll('.delete-hero-image, .delete-media');
+        this.editButtons = document.getElementsByClassName('');
 
         this.deleteButtons.forEach((button) => {
             button.addEventListener('click', () => {
