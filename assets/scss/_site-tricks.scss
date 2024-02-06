@@ -76,3 +76,23 @@
     position:relative;
     z-index: 3;
 }
+
+#fileList {
+    list-style-type: none;
+}
+.fileItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.fileName {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+.removeButton {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
