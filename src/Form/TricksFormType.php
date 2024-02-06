@@ -8,8 +8,8 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TricksFormType extends AbstractType
 {
@@ -27,13 +27,11 @@ class TricksFormType extends AbstractType
                 'class' => TricksGroup::class,
                 'choice_label' => 'id',
             ])
-            ->add('medias', CollectionType::class, [
-                'entry_type' => MediaFormType::Class, 
-                'allow_add' => true, 
-                'allow_delete' => true,
-                'by_reference' => false,
-                'required' => false,
-                'label' => 'Media'
+            ->add('medias', FileType::class, [
+                'label' => 'Ajouter des images ou vidéos',
+                'multiple' => true, 
+                'mapped' => false, 
+                'required' => false
             ])
         ;
     }
