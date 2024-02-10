@@ -35,7 +35,7 @@ class Tricks
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
-    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Media::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Media::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $medias;
 
     #[ORM\Column(length: 255)]
@@ -52,6 +52,13 @@ class Tricks
         return $this->id;
     }
 
+    public function setId(?int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+    
     public function getName(): ?string
     {
         return $this->name;
