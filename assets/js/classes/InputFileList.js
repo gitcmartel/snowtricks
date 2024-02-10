@@ -23,11 +23,14 @@ export default class InputFileList {
 
             const removeButton = document.createElement('button');
             removeButton.classList.add('removeButton');
-            removeButton.textContent = 'Supprimer';
             removeButton.addEventListener('click', () => {
                 this.removeFile(file);
             });
 
+            const removeButtonIcon = document.createElement('i');
+            removeButtonIcon.classList.add('fa-solid', 'fa-trash');
+
+            removeButton.appendChild(removeButtonIcon);
             listItem.appendChild(fileName);
             listItem.appendChild(removeButton);
 
