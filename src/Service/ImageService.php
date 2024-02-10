@@ -2,14 +2,13 @@
 
 namespace App\Service;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageService
 {
     private $uploadDirectory;
 
-    public function __construct(ParameterBagInterface $uploadDirectory)
+    public function __construct(string $uploadDirectory)
     {
         $this->uploadDirectory = $uploadDirectory;
     }
@@ -21,8 +20,7 @@ class ImageService
      */
     public function moveUploadedFile (UploadedFile $uploadedFile) : string 
     {
-        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-        $newFilename = $originalFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+        $newFilename = uniqid() . '.' . $uploadedFile->guessExtension();
 
         $uploadedFile->move(
             $this->uploadDirectory,
@@ -30,5 +28,16 @@ class ImageService
         );
 
         return $newFilename;
+    }
+
+    /**
+     * Deletes an image if it's not the default one
+     * @param string $imagePath
+     */
+    public function deleteImage(string $imagePath) {
+        $imageName = basename($imagePath);
+        if ($imageName !== 'hero_1.jpg') {
+            unlink($this->uploadDirectory . '\\' . $imageName);
+        }
     }
 }
