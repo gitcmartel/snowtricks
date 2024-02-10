@@ -2334,9 +2334,12 @@ h1, h2, h3, h4, h5,
 }
 
 .removeButton {
-  background-color: red;
-  color: white;
+  background: none;
+  color: red;
   border: none;
-  padding: 5px 10px;
+  font-size: 1rem;
   cursor: pointer;
+}
+.removeButton:hover {
+  color: darkred;
 }/*# sourceMappingURL=style.css.map */
