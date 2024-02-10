@@ -90,9 +90,12 @@
     margin-right: 10px;
 }
 .removeButton {
-    background-color: red;
-    color: white;
+    background:none;
+    color: red;
     border: none;
-    padding: 5px 10px;
+    font-size: 1rem;
     cursor: pointer;
+    &:hover {
+        color: darkred;
+    }
 }
