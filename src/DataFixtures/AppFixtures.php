@@ -79,7 +79,7 @@ class AppFixtures extends Fixture
             $tricks = $this->getReference('tricks'.$i);
             $media->setTricks($tricks);
             $media->setPath('images/img_'.rand(2, 5).'.jpg');
-            $media->setType('Image');
+            $media->setType('image');
             $manager->persist($media);
         }
 
