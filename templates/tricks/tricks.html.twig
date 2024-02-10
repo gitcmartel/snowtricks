@@ -4,17 +4,19 @@
 {% block importmap %}{{ importmap(['app', 'tricks']) }}{% endblock %}
 
 {% block body %}
-<form method="post" action="{{ path('app_tricks_edit', {'tricksId': tricks.id }) }}" enctype="multipart/form-data" id="formTricks">
+<form method="post" action="{{ path('app_tricks_edit', {'tricksId': formTricks.vars.value.id }) }}" enctype="multipart/form-data" id="formTricks">
+    {{ form_widget(formTricks._token) }}
+    {{ form_widget(formTricks.user) }}
+    {{ form_widget(formTricks.id) }}
     <!-- Hero -->
     <div class="ftco-blocks-cover-1">
-        <div class="site-section-cover overlay" style="background-image: url('{{ asset(tricks.image) }}')" id="hero">
+        <div class="site-section-cover overlay" style="background-image: url('{{ asset(formTricks.vars.value.image) }}')" id="hero">
             <div class="tricks-edit-buttons-hero d-flex justify-content-end">
                 <div class="edit-icons shadow d-flex justify-content-evenly">
-                    <label for="tricksImage" role="button">
+                    <label for="tricks_form_image" role="button">
                         <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
                     </label>
-                    <input type="file" accept=".png, .jpeg, .jpg, .svg" maxsize="2M" class="form-control d-none" name="tricksImage"
-                        id="tricksImage" value="">
+                    {{ form_widget(formTricks.image )}}
                     <div type="button" class="delete-hero-image" data-message="Confirmez-vous la suppression de l'image ?">
                         <i class="fa-solid fa-trash-can edit-icons-color"></i>
                     </div>
@@ -23,7 +25,7 @@
             <div class="container">
                 <div class="row catch-phrase">
                     <div class="col-md-5">
-                        <h1 class="mb-3 text-white">{{ tricks.name }}</h1>
+                        <h1 class="mb-3 text-white">{{ formTricks.vars.value.name }}</h1>
                     </div>
                 </div>
             </div>
@@ -39,15 +41,19 @@
                     See medias
                 </a>
             </div>
+            
             <div class="row justify-content-evenly mt-4 d-none d-md-flex" id="mediaList">
-                {% for media in tricks.medias %}
-                <div class="col-lg-2 col-md-4 col-sm-6 mb-4 me-2 d-flex flex-column media-row" id="media{{ media.id }}">
+                {% for media in formTricks.medias %}
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-4 me-2 d-flex flex-column media-row" id="media{{ media.vars.value.id }}">
+                    {{ form_widget(media.id )}}
+                    {{ form_widget(media.type )}}
+                    {{ form_widget(media.tricks )}}
                     <div class="media">
-                        {% if media.type == "Image" %}
-                        <img src="{{ asset(media.path) }}" alt="">
-                        {% elseif media.type == "Video" %}
-                        <video src="{{ asset(media.path) }}" controls>
-                            <source src="{{ asset(media.path) }}" type="video/mp4">
+                        {% if media.vars.value.type == "image" %}
+                        <img src="{{ asset(media.vars.value.path) }}" alt="">
+                        {% elseif media.vars.value.type == "video" %}
+                        <video src="{{ asset(media.vars.value.path) }}" controls>
+                            <source src="{{ asset(media.vars.value.path) }}" type="video/mp4">
                         </video>
                         {% endif %}
                     </div>
@@ -57,9 +63,9 @@
                                 <label for="tricksImage" role="button">
                                     <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
                                 </label>
-                                <input type="file" accept=".png, .jpeg, .jpg, .svg" maxsize="2M" class="form-control d-none" name="tricksImage"
+                                <input type="file" accept=".png, .jpeg, .jpg, .svg" maxsize="2M" class="form-control edit-media d-none" name="tricksImage"
                                 id="tricksImage" value="">
-                                <div type="button"  class="delete-media" data-media="{{ media.id }}" data-message="Confirmez-vous la suppression du media ?">
+                                <div type="button"  class="delete-media" data-media="{{ media.vars.value.id }}" data-message="Confirmez-vous la suppression du media ?">
                                     <i class="fa-solid fa-trash-can edit-icons-color"></i>
                                 </div>
                             </div>
@@ -67,18 +73,28 @@
                     </div>
                 </div>
                 {% endfor %}
-                <div class="row">
-                    <div class="col-lg-4">
-                        <label for="{{ formTricks.medias.vars.id }}">
-                            <i class="fa fa-plus"></i> {{ form_label(formTricks.medias) }}
-                        </label>
-                        {{ form_widget(formTricks.medias, {'attr': {'class': "form-control d-none"}} )}}
-                        <ul id="fileList"></ul>
-                    </div>
+            </div>
+        </div>
+    </section>
+    <!-- Add medias -->
+    <section>
+        <div class="container-fluid my-4">
+            <div class="row ms-3">
+                <div>
+                    <ul class="medias"
+                    data-index="{{ formTricks.medias|length > 0 ? formTricks.medias|last.vars.name + 1 : 0 }}"
+                    data-prototype="
+                        {{ form_widget(formTricks.medias.vars.prototype.path)|e('html_attr') }}
+                        {{ form_widget(formTricks.medias.vars.prototype.type)|e('html_attr') }}
+                        {{ form_widget(formTricks.medias.vars.prototype.id)|e('html_attr') }}
+                    "
+                ></ul>
+                    <button type="button" class="add_item_link" data-collection-holder-class="medias">Add a media</button>
                 </div>
             </div>
         </div>
     </section>
+    <!-- End add medias -->
 
     <!-- Tricks description -->
     <section>
@@ -93,7 +109,7 @@
                         {{ form_widget(formTricks.description, {'attr': {'class': "form-control tricks-description", 
                     'placeholder': "Description"}} )}}
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-lg-8">
                             <div class="input-group mb-3">
                                 <label class="input-group-text" for="tricks_form_tricks_group">Groups</label>
@@ -122,7 +138,7 @@
 
     <!-- User Modifications -->
     <section id="modifications">
-
+        {{ form_widget(formTricks.isHeroImageDeleted) }}
     </section>
 </form>
 {% endblock %}
