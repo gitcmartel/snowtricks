@@ -4,4 +4,4 @@ import InputFileList from './classes/InputFileList.js';
 
 
 let tricksEdit = new TricksEdit(new ModalMessage);
-let inputFileList = new InputFileList("tricks_form_medias", "fileList");
+let inputFileList = new InputFileList("tricks_form_addMedias", "fileList");
