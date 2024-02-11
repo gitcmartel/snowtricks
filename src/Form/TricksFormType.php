@@ -42,7 +42,14 @@ class TricksFormType extends AbstractType
             ])
             ->add('tricks_group', EntityType::class, [
                 'class' => TricksGroup::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'form-select' 
+                ], 
+                'label' => 'Groupe', 
+                'label_attr' => [
+                    'class' => 'input-group-text' 
+                ],
             ])
             ->add('medias', CollectionType::class, [
                 'entry_type' => MediaFormType::class, // Le type de formulaire pour chaque élément de la collection
