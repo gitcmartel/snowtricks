@@ -112,12 +112,8 @@
                     <div class="row mb-3">
                         <div class="col-lg-8">
                             <div class="input-group mb-3">
-                                <label class="input-group-text" for="tricks_form_tricks_group">Groups</label>
-                                <select class="form-select" id="tricks_form_tricks_group" name="tricks_form[tricks_group]">
-                                    {% for group in groups %}
-                                    <option value="{{ group.id }}">{{ group.name }}</option>
-                                    {% endfor %}
-                                </select>
+                                {{ form_label(formTricks.tricks_group) }}
+                                {{ form_widget(formTricks.tricks_group) }}
                             </div>
                         </div>
                     </div>
