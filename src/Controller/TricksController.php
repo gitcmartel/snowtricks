@@ -8,12 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Media;
 use App\Repository\TricksRepository;
 use App\Repository\MediaRepository;
-use App\Repository\TricksGroupRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\ImageService;
+use App\Service\MediaService;
 use App\Service\MimeService;
 
 class TricksController extends AbstractController
@@ -37,13 +35,12 @@ class TricksController extends AbstractController
     }
 
     #[Route('/tricks-edit/{tricksId}', name: 'app_tricks_edit')]
-    public function edit($tricksId, TricksRepository $tricksRepository, TricksGroupRepository $tricksGroupRepository, 
-        Request $request, EntityManagerInterface $entityManager, MediaRepository $mediaRepository, ImageService $imageService, MimeService $mimeService) 
+    public function edit($tricksId, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager, 
+        MediaRepository $mediaRepository, MediaService $mediaService, MimeService $mimeService) 
     {
 
         //Fetching data
         $tricks = $tricksRepository->findOneById($tricksId);
-        $groups = $tricksGroupRepository->findAll();
         $originalMedias = new ArrayCollection();
 
         foreach($tricks->getMedias() as $media) {
@@ -59,7 +56,7 @@ class TricksController extends AbstractController
             $isHeroDeleted = $form->get('isHeroImageDeleted')->getData();
 
             if($isHeroDeleted === true) {
-                $imageService->deleteImage($tricks->getImage());
+                $mediaService->deleteMedia($tricks->getImage());
                 $tricks->setImage('images/hero_1.jpg');
             }
 
@@ -67,8 +64,8 @@ class TricksController extends AbstractController
 
             //Move the uploaded image 
             if ($uploadedFile == true) {
-                $newTricksImageFileName = $imageService->moveUploadedFile($uploadedFile);
-                $imageService->deleteImage($tricks->getImage());
+                $newTricksImageFileName = $mediaService->moveUploadedFile($uploadedFile);
+                $mediaService->deleteMedia($tricks->getImage());
                 $tricks->setImage('images/tricks/' . $newTricksImageFileName);
             }
             //endregion
@@ -79,30 +76,24 @@ class TricksController extends AbstractController
                     //$entityManager->remove($media);  A voir si besoin de supprimer l'enregistrement en base de données
                 }
             }
-
-            foreach ($form->get('medias') as $media) {
-                $mediaId = $media->get('id')->getData();
-                $uploadedFile = $media->get('path')->getData();
+            foreach ($form->get('medias') as $formMedia) {
+                $uploadedFile = $formMedia->get('path')->getData();
+                $media = $formMedia->getData(); 
                 if ($uploadedFile !== null) {
                     $type = $mimeService->getType($uploadedFile);
-                    $newMediaImageFileName = $imageService->moveUploadedFile($uploadedFile);
-                    if ($mediaId !== null) {
-                        $actualMedia = $mediaRepository->findOneById((int)$mediaId);
+                    $newMediaFileName = $mediaService->moveUploadedFile($uploadedFile);
+                    if ($media->getId() !== null) {
+                        $actualMedia = $mediaRepository->findOneById((int)$media->getId());
                         // If there is an id we update the existing media
-                        $imageService->deleteImage($actualMedia->getPath());
-                        $actualMedia->setPath('images/tricks/' . $newMediaImageFileName);
+                        $mediaService->deleteMedia($actualMedia->getPath());
+                        $media->setPath('medias/' . $newMediaFileName);
                     } else {
                         // If the id is null we create a new media
-                        $newMedia = new Media();
-                        $newMedia->setPath($type . '/tricks/' . $newMediaImageFileName);
-                        $newMedia->setType($type);
-                        $newMedia->setTricks($tricks);
-                        $tricks->addMedia($newMedia);
+                        $media->setPath('medias/' . $newMediaFileName);
+                        $media->setType($type);                    
                     }
                 }
             }
-            dd($tricks);
-            exit;
             //Saving data
             $entityManager->persist($tricks);
             $entityManager->flush();
@@ -112,8 +103,12 @@ class TricksController extends AbstractController
 
         return $this->render('tricks/tricks.html.twig', [
             'controller_name' => 'tricksController', 
-            'groups' => $groups,
             'formTricks' => $form->createView(),
         ]);
+    }
+
+    #[Route('/tricks-delete/{tricksId}', name: 'app_tricks_delete')]
+    public function delete($tricksId, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager) {
+        
     }
 }
