@@ -60,11 +60,10 @@
                     <div class="edit-buttons-container">
                         <div class="w-100 d-flex justify-content-end">
                             <div class="edit-icons-media d-flex justify-content-evenly">
-                                <label for="tricksImage" role="button">
+                                <label for="{{ media.path.vars.id }}" role="button">
                                     <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
                                 </label>
-                                <input type="file" accept=".png, .jpeg, .jpg, .svg" maxsize="2M" class="form-control edit-media d-none" name="tricksImage"
-                                id="tricksImage" value="">
+                                {{ form_widget(media.path, {'attr': {'class': 'd-none'}}) }}
                                 <div type="button"  class="delete-media" data-media="{{ media.vars.value.id }}" data-message="Confirmez-vous la suppression du media ?">
                                     <i class="fa-solid fa-trash-can edit-icons-color"></i>
                                 </div>
@@ -118,9 +117,9 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-lg-end justify-content-center">
-                        <div type="button" data-message="Confirmez-vous la suppression du tricks ?" class="delete-tricks btn btn-block btn-primary text-white py-3 px-5 me-3 deleteButton">
+                        <div type="button" id="deleteTricks" data-message="Confirmez-vous la suppression du tricks ?" class="delete-tricks btn btn-block btn-primary text-white py-3 px-5 me-3 deleteButton">
                             Delete
-                    </div>
+                        </div>
                         <button type="submit" class="btn btn-block btn-primary text-white py-3 px-5">Save</button>
                     </div>
                 </div>
