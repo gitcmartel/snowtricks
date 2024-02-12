@@ -2,11 +2,13 @@ export default class TricksEdit {
 
     deleteButtons;
     editButtons;
+    deleteTricksButton;
 
     constructor(modalDialog) {
         this.deleteButtons = document.querySelectorAll('.delete-hero-image, .delete-media');
         this.editButtons = document.querySelectorAll('.edit-hero-image, .edit-media');
-
+        this.deleteTricksButton = document.getElementById('deleteTricks');
+        
         this.deleteButtons.forEach((button) => {
             button.addEventListener('click', () => {
 
@@ -50,6 +52,31 @@ export default class TricksEdit {
             .forEach((tag) => {
                 this.addTagFormDeleteLink(tag)
         });
+
+        this.deleteTricksButton.addEventListener('click', () => {
+
+            modalDialog.setModalMessage("Confirmez-vous la suppression du tricks ?");
+            modalDialog.showModal();
+
+            document.querySelector('#modalYesButton').addEventListener('click', () => {
+                modalDialog.hideModal();
+                var tricksId = document.getElementById('tricks_form_id').value;
+
+                $.ajax({
+                    url: '/tricks/' + tricksId + '/delete',
+                    type: 'DELETE',
+                    success: function(response) {
+                        // Gérer la réponse du serveur
+                        alert(response.message);
+                        window.location.href = '/';
+                    },
+                    error: function(xhr, status, error) {
+                        // Gérer les erreurs
+                        alert('Une erreur s\'est produite lors de la suppression du trick.');
+                    }
+                });
+            });
+        });
     }
 
     /**
@@ -72,14 +99,6 @@ export default class TricksEdit {
     }
 
     /**
-     * 
-     */
-
-    editMedia () {
-
-    }
-
-    /**
      * Deletes the hero image
      */
     deleteHeroImage() {
@@ -94,22 +113,7 @@ export default class TricksEdit {
      */
     deleteMedia(mediaId) {
         const media = document.getElementById("media" + mediaId);
-        const formTricks = document.getElementById("formTricks");
-        var input = document.createElement('input');
-        input.setAttribute('name', 'deleteMedia[]');
-        input.setAttribute('id', 'deleteMedia[]');
-        input.setAttribute('value', mediaId);
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('form', 'formTricks');
-        formTricks.appendChild(input);
-        media.classList.add("d-none");
-    }
-
-    /**
-     * 
-     */
-    deleteTricks() {
-
+        media.remove();
     }
 
     /**
