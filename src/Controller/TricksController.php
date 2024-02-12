@@ -13,6 +13,7 @@ use App\Repository\MediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\MediaService;
 use App\Service\MimeService;
+use App\Entity\Tricks;
 
 class TricksController extends AbstractController
 {
@@ -70,12 +71,21 @@ class TricksController extends AbstractController
             }
             //endregion
 
+            //region Delete media
             foreach ($originalMedias as $media) {
                 if (false === $tricks->getMedias()->contains($media)) {
+                    //We delete the video or image
+                    $mediaService->deleteMedia($media->getPath());
+
+                    //Then we delete the media from the database
                     $tricks->removeMedia($media);
-                    //$entityManager->remove($media);  A voir si besoin de supprimer l'enregistrement en base de données
+                    $entityManager->remove($media); 
                 }
             }
+
+            //endregion
+
+            //region Add or edit media
             foreach ($form->get('medias') as $formMedia) {
                 $uploadedFile = $formMedia->get('path')->getData();
                 $media = $formMedia->getData(); 
@@ -94,6 +104,8 @@ class TricksController extends AbstractController
                     }
                 }
             }
+            //endregion
+
             //Saving data
             $entityManager->persist($tricks);
             $entityManager->flush();
@@ -107,8 +119,22 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/tricks-delete/{tricksId}', name: 'app_tricks_delete')]
-    public function delete($tricksId, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager) {
-        
+    #[Route('/tricks/{id}/delete', name: 'app_tricks_delete')]
+    public function delete(Tricks $tricks, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager, 
+        MediaService $mediaService) {
+
+        //Deletes all the tricks related medias
+        foreach ($tricks->getMedias() as $media) {
+            $mediaService->deleteMedia($media->getPath());
+        }
+
+        //Deletes the tricks main image
+        $mediaService->deleteMedia($media->getImage());
+
+        //Deletes the tricks
+        $entityManager->remove($tricks);
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Le tricks a été supprimé avec succès']);
     }
 }
