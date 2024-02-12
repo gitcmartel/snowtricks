@@ -24,7 +24,7 @@ class MediaFormType extends AbstractType
                 'required' => false, 
                 'attr' => [
                     'type' => 'file',
-                    'accept' => '.png, .jpeg, .jpg, .svg',
+                    'accept' => '.png, .jpeg, .jpg, .svg, .mp4',
                     'class' => 'form-control'
                 ]
             ])
