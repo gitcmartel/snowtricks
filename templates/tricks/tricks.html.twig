@@ -48,13 +48,11 @@
                     {{ form_widget(media.id )}}
                     {{ form_widget(media.type )}}
                     {{ form_widget(media.tricks )}}
-                    <div class="media">
+                    <div class="media" id="media-{{ media.path.vars.id }}">
                         {% if media.vars.value.type == "image" %}
-                        <img src="{{ asset(media.vars.value.path) }}" alt="">
+                        <img src="{{ asset(media.vars.value.path) }}" id="image-{{ media.path.vars.id }}" alt="">
                         {% elseif media.vars.value.type == "video" %}
-                        <video src="{{ asset(media.vars.value.path) }}" controls>
-                            <source src="{{ asset(media.vars.value.path) }}" type="video/mp4">
-                        </video>
+                        <iframe width="100%" height="100%" src="{{ media.vars.value.path }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                         {% endif %}
                     </div>
                     <div class="edit-buttons-container">
@@ -63,7 +61,7 @@
                                 <label for="{{ media.path.vars.id }}" role="button">
                                     <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
                                 </label>
-                                {{ form_widget(media.path, {'attr': {'class': 'd-none'}}) }}
+                                {{ form_widget(media.path, {'attr': {'class': 'edit-media d-none'}}) }}
                                 <div type="button"  class="delete-media" data-media="{{ media.vars.value.id }}" data-message="Confirmez-vous la suppression du media ?">
                                     <i class="fa-solid fa-trash-can edit-icons-color"></i>
                                 </div>
