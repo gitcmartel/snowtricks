@@ -35,7 +35,7 @@ export default class TricksEdit {
                 if (button.classList.contains('edit-hero-image')) {
                     this.editImageTricks.bind(this)(event);
                 } else if (button.classList.contains('edit-media')) {
-                    this.editMedia.bind(this);
+                    this.editMedia.bind(this)(event);
                 }
             });
         
@@ -106,6 +106,43 @@ export default class TricksEdit {
         const isHeroImageDeleted = document.getElementById('tricks_form_isHeroImageDeleted');
         isHeroImageDeleted.checked = true;
         hero.style.backgroundImage = "";
+    }
+
+    /**
+     * Modify a media's image
+     */
+    editMedia (event) {
+        const [media] = event.target.files;
+        const image = document.getElementById("image-" + event.target.id);
+        const video = document.getElementById("video-" + event.target.id);
+        const parentElement = document.getElementById("media-" + event.target.id);
+
+        //We delete the content of mediaContainer
+        if (parentElement) {
+            // Tant qu'il y a des enfants, les supprimer un par un
+            while (parentElement.firstChild) {
+                parentElement.removeChild(parentElement.firstChild);
+            }
+        }
+
+        if (media) {
+            if (media.type.startsWith('image')) {
+                const newImage = document.createElement('img');
+                newImage.setAttribute('src', URL.createObjectURL(media));
+                newImage.setAttribute('id', "image-" + event.target.id);
+                parentElement.appendChild(newImage);
+            } else if (media.type.startsWith('video')) {
+                const newVideo = document.createElement('video');
+                newVideo.setAttribute('src', URL.createObjectURL(media));
+                newVideo.setAttribute('controls', '');
+                const newSource = document.createElement('source');
+                newSource.setAttribute('src', URL.createObjectURL(media));
+                newSource.setAttribute('type', 'video/mp4');
+                newSource.setAttribute('id', "video-" + event.target.id);
+                newVideo.appendChild(newSource);
+                parentElement.appendChild(newVideo);
+            } 
+        }
     }
 
     /**
