@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class MediaFormType extends AbstractType
@@ -27,6 +28,11 @@ class MediaFormType extends AbstractType
                     'accept' => '.png, .jpeg, .jpg, .svg, .mp4',
                     'class' => 'form-control'
                 ]
+            ])
+            ->add('link', TextType::class, [
+                'label' => 'Lien vidéo',
+                'mapped' => false, 
+                'required' => false
             ])
             ->add('type', HiddenType::class)
             ->add('tricks', EntityType::class, [
