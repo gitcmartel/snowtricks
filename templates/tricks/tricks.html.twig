@@ -4,20 +4,23 @@
 {% block importmap %}{{ importmap(['app', 'tricks']) }}{% endblock %}
 
 {% block body %}
-<form method="post" action="{{ path('app_tricks_edit', {'tricksId': formTricks.vars.value.id }) }}" enctype="multipart/form-data" id="formTricks">
+<form method="post" action="{{ path('app_tricks_edit', {'tricksId': formTricks.vars.value.id }) }}"
+    enctype="multipart/form-data" id="formTricks">
     {{ form_widget(formTricks._token) }}
     {{ form_widget(formTricks.user) }}
     {{ form_widget(formTricks.id) }}
     <!-- Hero -->
     <div class="ftco-blocks-cover-1">
-        <div class="site-section-cover overlay" style="background-image: url('{{ asset(formTricks.vars.value.image) }}')" id="hero">
+        <div class="site-section-cover overlay"
+            style="background-image: url('{{ asset(formTricks.vars.value.image) }}')" id="hero">
             <div class="tricks-edit-buttons-hero d-flex justify-content-end">
                 <div class="edit-icons shadow d-flex justify-content-evenly">
                     <label for="tricks_form_image" role="button">
                         <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
                     </label>
                     {{ form_widget(formTricks.image )}}
-                    <div type="button" class="delete-hero-image" data-message="Confirmez-vous la suppression de l'image ?">
+                    <div type="button" class="delete-hero-image"
+                        data-message="Confirmez-vous la suppression de l'image ?">
                         <i class="fa-solid fa-trash-can edit-icons-color"></i>
                     </div>
                 </div>
@@ -41,10 +44,11 @@
                     See medias
                 </a>
             </div>
-            
+
             <div class="row justify-content-evenly mt-4 d-none d-md-flex" id="mediaList">
                 {% for media in formTricks.medias %}
-                <div class="col-lg-2 col-md-4 col-sm-6 mb-4 me-2 d-flex flex-column media-row" id="media{{ media.vars.value.id }}">
+                <div class="col-lg-2 col-md-4 col-sm-6 mb-4 me-2 d-flex flex-column media-row"
+                    id="media{{ media.vars.value.id }}">
                     {{ form_widget(media.id )}}
                     {{ form_widget(media.type )}}
                     {{ form_widget(media.tricks )}}
@@ -52,18 +56,50 @@
                         {% if media.vars.value.type == "image" %}
                         <img src="{{ asset(media.vars.value.path) }}" id="image-{{ media.path.vars.id }}" alt="">
                         {% elseif media.vars.value.type == "video" %}
-                        <iframe width="100%" height="100%" src="{{ media.vars.value.path }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="{{ media.vars.value.path }}"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
                         {% endif %}
                     </div>
                     <div class="edit-buttons-container">
                         <div class="w-100 d-flex justify-content-end">
                             <div class="edit-icons-media d-flex justify-content-evenly">
-                                <label for="{{ media.path.vars.id }}" role="button">
+                                <label role="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop{{ media.path.vars.id }}">
                                     <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
                                 </label>
-                                {{ form_widget(media.path, {'attr': {'class': 'edit-media d-none'}}) }}
-                                <div type="button"  class="delete-media" data-media="{{ media.vars.value.id }}" data-message="Confirmez-vous la suppression du media ?">
+                                <div type="button" class="delete-media" data-media="{{ media.vars.value.id }}"
+                                    data-message="Confirmez-vous la suppression du media ?">
                                     <i class="fa-solid fa-trash-can edit-icons-color"></i>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="staticBackdrop{{ media.path.vars.id }}" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{ media.path.vars.id }}"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel{{ media.path.vars.id }}">Add Media</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <label for="{{ media.path.vars.id }}" role="button">
+                                                    <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
+                                                </label>
+                                                <div class="d-flex">
+                                                    {{ form_widget(media.path, {'attr': {'class': 'edit-media d-none'}}) }}
+                                                    {{ form_widget(media.link, {'attr': {'class': 'edit-media'}}) }}
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary">Validate</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,14 +115,14 @@
             <div class="row ms-3">
                 <div>
                     <ul class="medias"
-                    data-index="{{ formTricks.medias|length > 0 ? formTricks.medias|last.vars.name + 1 : 0 }}"
-                    data-prototype="
+                        data-index="{{ formTricks.medias|length > 0 ? formTricks.medias|last.vars.name + 1 : 0 }}"
+                        data-prototype="
                         {{ form_widget(formTricks.medias.vars.prototype.path)|e('html_attr') }}
                         {{ form_widget(formTricks.medias.vars.prototype.type)|e('html_attr') }}
                         {{ form_widget(formTricks.medias.vars.prototype.id)|e('html_attr') }}
-                    "
-                ></ul>
-                    <button type="button" class="add_item_link" data-collection-holder-class="medias">Add a media</button>
+                    "></ul>
+                    <button type="button" class="add_item_link" data-collection-holder-class="medias">Add a
+                        media</button>
                 </div>
             </div>
         </div>
@@ -103,8 +139,8 @@
                         {{ form_widget(formTricks.name, {'attr': {'class': "form-control", 'placeholder': "Titre"}} )}}
                     </div>
                     <div class="my-4">
-                        {{ form_widget(formTricks.description, {'attr': {'class': "form-control tricks-description", 
-                    'placeholder': "Description"}} )}}
+                        {{ form_widget(formTricks.description, {'attr': {'class': "form-control tricks-description",
+                        'placeholder': "Description"}} )}}
                     </div>
                     <div class="row mb-3">
                         <div class="col-lg-8">
@@ -115,16 +151,17 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-lg-end justify-content-center">
-                        <div type="button" id="deleteTricks" data-message="Confirmez-vous la suppression du tricks ?" class="delete-tricks btn btn-block btn-primary text-white py-3 px-5 me-3 deleteButton">
+                        <div type="button" id="deleteTricks" data-message="Confirmez-vous la suppression du tricks ?"
+                            class="delete-tricks btn btn-block btn-primary text-white py-3 px-5 me-3 deleteButton">
                             Delete
                         </div>
                         <button type="submit" class="btn btn-block btn-primary text-white py-3 px-5">Save</button>
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-1 col-0">
-                    
+
                 </div>
-            </div>           
+            </div>
         </div>
     </section>
     <!-- End tricks description -->
@@ -133,5 +170,6 @@
     <section id="modifications">
         {{ form_widget(formTricks.isHeroImageDeleted) }}
     </section>
+
 </form>
 {% endblock %}
