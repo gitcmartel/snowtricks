@@ -19,20 +19,23 @@ class MediaFormType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('path', FileType::class, [
-                'label' => 'Ajouter des images ou vidéos',
+                'label' => 'Add images of video links',
                 'multiple' => false, 
                 'mapped' => false, 
                 'required' => false, 
                 'attr' => [
                     'type' => 'file',
-                    'accept' => '.png, .jpeg, .jpg, .svg, .mp4',
-                    'class' => 'form-control'
+                    'accept' => '.png, .jpeg, .jpg, .svg',
+                    'class' => 'form-control w-90'
                 ]
             ])
             ->add('link', TextType::class, [
-                'label' => 'Lien vidéo',
+                'label' => 'Paste a video link',
                 'mapped' => false, 
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'class' => 'd-none w-90 mb-3'
+                ]
             ])
             ->add('type', HiddenType::class)
             ->add('tricks', EntityType::class, [
