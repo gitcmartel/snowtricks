@@ -547,6 +547,10 @@ h1, h2, h3, h4, h5,
   border-bottom: 1px solid #e9ecef !important;
 }
 
+.w-90 {
+  width: 90%;
+}
+
 /* Navbar */
 .site-navbar {
   margin-bottom: 0px;
