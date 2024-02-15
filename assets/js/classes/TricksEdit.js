@@ -3,10 +3,16 @@ export default class TricksEdit {
     deleteButtons;
     editButtons;
     deleteTricksButton;
+    radioImage;
+    radioVideo;
+    btnValidateEditMedia;
 
     constructor(modalDialog) {
         this.deleteButtons = document.querySelectorAll('.delete-hero-image, .delete-media');
         this.editButtons = document.querySelectorAll('.edit-hero-image, .edit-media');
+        this.radioImage = document.querySelectorAll('.radio-image');
+        this.radioVideo = document.querySelectorAll('.radio-video');
+        this.btnValidateEditMedia = document.querySelectorAll('.btn-validate-edit-media');
         this.deleteTricksButton = document.getElementById('deleteTricks');
         
         this.deleteButtons.forEach((button) => {
@@ -34,12 +40,17 @@ export default class TricksEdit {
             button.addEventListener('change', () => {
                 if (button.classList.contains('edit-hero-image')) {
                     this.editImageTricks.bind(this)(event);
-                } else if (button.classList.contains('edit-media')) {
-                    this.editMedia.bind(this)(event);
                 }
             });
         
         });
+
+        this.btnValidateEditMedia.forEach((button) => {
+            button.addEventListener('click', () => {
+                this.editMedia(button); 
+            });
+        });
+
 
         document
             .querySelectorAll('.add_item_link')
@@ -77,6 +88,40 @@ export default class TricksEdit {
                 });
             });
         });
+
+        this.radioImage.forEach((radio) => {
+            radio.addEventListener('change', () => {
+                this.handleImageRadioChange(radio);
+            });
+        });
+
+        this.radioVideo.forEach((radio) => {
+            radio.addEventListener('change', () => {
+                this.handleVideoRadioChange(radio);
+            });
+        });
+    }
+
+    handleVideoRadioChange(radio) {
+        const imageElement = radio.getAttribute("data-image-element");
+        const videoElement = radio.getAttribute("data-video-element");
+        const video = document.getElementById(videoElement);
+        const image = document.getElementById(imageElement);
+    
+        image.classList.add('d-none');
+        video.classList.remove('d-none');
+        image.querySelector("input").value = "";
+    }
+
+    handleImageRadioChange(radio) {
+        const imageElement = radio.getAttribute("data-image-element");
+        const videoElement = radio.getAttribute("data-video-element");
+        const video = document.getElementById(videoElement);
+        const image = document.getElementById(imageElement);
+    
+        image.classList.remove('d-none');
+        video.classList.add('d-none');
+        video.querySelector("input").value = "";
     }
 
     /**
@@ -109,13 +154,13 @@ export default class TricksEdit {
     }
 
     /**
-     * Modify a media's image
+     * Modify a media's image or video
      */
-    editMedia (event) {
-        const [media] = event.target.files;
-        const image = document.getElementById("image-" + event.target.id);
-        const video = document.getElementById("video-" + event.target.id);
-        const parentElement = document.getElementById("media-" + event.target.id);
+    editMedia (button) {
+        const newImagePath = document.getElementById(button.getAttribute("data-add-image-element")).querySelector("input");
+        const newVideoPath = document.getElementById(button.getAttribute("data-add-video-element")).querySelector("input");
+        const mediaType = document.getElementById(button.getAttribute("data-type-element"));
+        const parentElement = document.getElementById(button.getAttribute("data-media-id"));
 
         //We delete the content of mediaContainer
         if (parentElement) {
@@ -125,24 +170,26 @@ export default class TricksEdit {
             }
         }
 
-        if (media) {
-            if (media.type.startsWith('image')) {
-                const newImage = document.createElement('img');
-                newImage.setAttribute('src', URL.createObjectURL(media));
-                newImage.setAttribute('id', "image-" + event.target.id);
-                parentElement.appendChild(newImage);
-            } else if (media.type.startsWith('video')) {
-                const newVideo = document.createElement('video');
-                newVideo.setAttribute('src', URL.createObjectURL(media));
-                newVideo.setAttribute('controls', '');
-                const newSource = document.createElement('source');
-                newSource.setAttribute('src', URL.createObjectURL(media));
-                newSource.setAttribute('type', 'video/mp4');
-                newSource.setAttribute('id', "video-" + event.target.id);
-                newVideo.appendChild(newSource);
-                parentElement.appendChild(newVideo);
-            } 
+        if (newImagePath.files.length > 0) {
+            const newImage = document.createElement('img');
+            newImage.setAttribute('src', URL.createObjectURL(newImagePath.files[0]));
+            newImage.setAttribute('id', button.getAttribute("data-image-element"));
+            parentElement.appendChild(newImage);
+            mediaType.value = "image";
         }
+
+        if (newVideoPath.value !== "") {
+            const newVideo = document.createElement("iframe");
+            newVideo.setAttribute("width", "100%");
+            newVideo.setAttribute("height", "100%");
+            newVideo.setAttribute("src", newVideoPath.value);
+            newVideo.setAttribute("title", "YouTube video player");
+            newVideo.setAttribute("frameborder", "0");
+            newVideo.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+            newVideo.setAttribute("allowfullscreen", "");
+            parentElement.appendChild(newVideo);
+            mediaType.value = "video";
+        } 
     }
 
     /**
@@ -164,15 +211,24 @@ export default class TricksEdit {
         const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
       
         const item = document.createElement('li');
+        item.classList.add("list-group-item");
       
         item.innerHTML = collectionHolder
           .dataset
           .prototype
           .replace(
-            /__name__/g,
+            /__media_name__/g,
             collectionHolder.dataset.index
-          );
-      
+        );
+        
+        const imageElementId = item.querySelector("input[type=file]").id;
+        const videoElementId = item.querySelector("input[type=text]").id;
+
+        const firstChild = item.firstChild;
+
+        const radioButtons = this.createRadiosImageAndVideosElements(collectionHolder, imageElementId, videoElementId);
+        item.insertBefore(radioButtons, firstChild);
+
         collectionHolder.appendChild(item);
       
         collectionHolder.dataset.index++;
@@ -183,7 +239,8 @@ export default class TricksEdit {
 
       addTagFormDeleteLink = (item) => {
         const removeFormButton = document.createElement('button');
-        removeFormButton.innerText = 'Delete this media';
+        removeFormButton.innerHTML = '<i class="fa-solid fa-trash-alt fa-xl" style="color: red;"></i>';
+        removeFormButton.classList.add('btn');
     
         item.append(removeFormButton);
     
@@ -192,5 +249,61 @@ export default class TricksEdit {
             // remove the li for the tag form
             item.remove();
         });
+    }
+
+    createRadioElement(labelText, id, imageElementId, videoElementId, name, className, checked, changeHandler) {
+        // Create element div.form-check
+        var div = document.createElement("div");
+        div.className = "form-check me-3";
+    
+        // Create input radio
+        var input = document.createElement("input");
+        input.className = "form-check-input me-2" + className;
+        input.type = "radio";
+        input.name = name;
+        input.id = id;
+        input.setAttribute("data-image-element", imageElementId);
+        input.setAttribute("data-video-element", videoElementId);
+        if (checked) {
+            input.checked = true;
+        }
+        
+        // Adding listener
+        if (typeof changeHandler === 'function') {
+            input.addEventListener('change', function() {
+                changeHandler(input); 
+            });
+        }
+
+        // Create label
+        var label = document.createElement("label");
+        label.className = "form-check-label";
+        label.htmlFor = id;
+        label.textContent = labelText;
+    
+        // Add input and label to the div element
+        div.appendChild(input);
+        div.appendChild(label);
+    
+        return div;
+    }
+
+    createRadiosImageAndVideosElements(collectionHolder, imageElementId, videoElementId) {
+        // Video radio element
+        const radioVideo = this.createRadioElement("Video link", "videoId-" + collectionHolder.dataset.index, 
+        imageElementId, videoElementId, "media-" + collectionHolder.dataset.index, "radio-video", false, 
+        this.handleVideoRadioChange);
+
+        // Image radio element
+        const radioImage = this.createRadioElement("Image", "imageId-" + collectionHolder.dataset.index, 
+        imageElementId, videoElementId, "media-" + collectionHolder.dataset.index, "radio-image", true, 
+        this.handleImageRadioChange);
+
+        const div = document.createElement('div');
+        div.classList.add('d-flex', 'my-3');
+        div.appendChild(radioImage);
+        div.appendChild(radioVideo);
+
+        return div;
     }
 }
