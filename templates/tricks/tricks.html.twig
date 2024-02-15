@@ -59,7 +59,8 @@
                         <iframe width="100%" height="100%" src="{{ media.vars.value.path }}"
                             title="YouTube video player" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen></iframe>
+                            allowfullscreen>
+                        </iframe>
                         {% endif %}
                     </div>
                     <div class="edit-buttons-container">
@@ -74,29 +75,58 @@
                                     <i class="fa-solid fa-trash-can edit-icons-color"></i>
                                 </div>
                                 <!-- Modal -->
-                                <div class="modal fade" id="staticBackdrop{{ media.path.vars.id }}" data-bs-backdrop="static"
-                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel{{ media.path.vars.id }}"
-                                    aria-hidden="true">
+                                <div class="modal fade" id="staticBackdrop{{ media.path.vars.id }}"
+                                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                    aria-labelledby="staticBackdropLabel{{ media.path.vars.id }}" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel{{ media.path.vars.id }}">Add Media</h5>
+                                                <h5 class="modal-title"
+                                                    id="staticBackdropLabel{{ media.path.vars.id }}">Add Media</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <label for="{{ media.path.vars.id }}" role="button">
-                                                    <i class="fa-solid fa-pencil me-4 edit-icons-color"></i>
-                                                </label>
-                                                <div class="d-flex">
-                                                    {{ form_widget(media.path, {'attr': {'class': 'edit-media d-none'}}) }}
-                                                    {{ form_widget(media.link, {'attr': {'class': 'edit-media'}}) }}
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input radio-image" type="radio" name="flexRadio{{ media.path.vars.id }}" id="flexRadioImage{{ media.path.vars.id }}" 
+                                                        data-video-element="add-video-{{ media.path.vars.id }}" data-image-element="add-image-{{ media.path.vars.id }}" checked>
+                                                        <label class="form-check-label" value="image" for="flexRadioImage{{ media.path.vars.id }}">
+                                                            Image
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input radio-video" type="radio" name="flexRadio{{ media.path.vars.id }}" id="flexRadioVideo{{ media.path.vars.id }}" 
+                                                        data-video-element="add-video-{{ media.path.vars.id }}" data-image-element="add-image-{{ media.path.vars.id }}">
+                                                        <label class="form-check-label" value="video" for="flexRadioVideo{{ media.path.vars.id }}">
+                                                            Video
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="d-flex flex-column">
+                                                    <div class="mb-3" id="add-image-{{ media.path.vars.id }}">
+                                                        <label for="{{ media.path.vars.id }}" role="button">
+                                                            Select an image file
+                                                        </label>
+                                                        {{ form_widget(media.path, {'attr': {'class': 'edit-media d-none'}})
+                                                        }}
+                                                        <div id="showImagePath{{ media.path.vars.id }}"></div>
+                                                    </div>
+                                                    <div class="input-group mb-3 d-none" id="add-video-{{ media.path.vars.id }}">
+                                                        {{ form_label(media.link) }}
+                                                        {{ form_widget(media.link, {'attr': {'class': 'edit-media
+                                                        w-100'}}) }}
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Validate</button>
+                                                <button type="button" class="btn btn-primary btn-validate-edit-media" data-bs-dismiss="modal" data-add-video-element="add-video-{{ media.path.vars.id }}" 
+                                                data-add-image-element="add-image-{{ media.path.vars.id }}" data-media-id="media-{{ media.path.vars.id }}"
+                                                data-image-element="image-{{ media.path.vars.id }}" data-video-element="video-{{ media.path.vars.id }}" 
+                                                data-type-element="{{ media.type.vars.id }}">Validate</button>
                                             </div>
                                         </div>
                                     </div>
@@ -113,15 +143,16 @@
     <section>
         <div class="container-fluid my-4">
             <div class="row ms-3">
-                <div>
-                    <ul class="medias"
+                <div class="col-md-8 col-12">
+                    <ul class="medias list-group mb-3"
                         data-index="{{ formTricks.medias|length > 0 ? formTricks.medias|last.vars.name + 1 : 0 }}"
                         data-prototype="
-                        {{ form_widget(formTricks.medias.vars.prototype.path)|e('html_attr') }}
-                        {{ form_widget(formTricks.medias.vars.prototype.type)|e('html_attr') }}
-                        {{ form_widget(formTricks.medias.vars.prototype.id)|e('html_attr') }}
+                            {{ form_widget(formTricks.medias.vars.prototype.path)|e('html_attr') }}
+                            {{ form_widget(formTricks.medias.vars.prototype.link)|e('html_attr') }}
+                            {{ form_widget(formTricks.medias.vars.prototype.type)|e('html_attr') }}
+                            {{ form_widget(formTricks.medias.vars.prototype.id)|e('html_attr') }}
                     "></ul>
-                    <button type="button" class="add_item_link" data-collection-holder-class="medias">Add a
+                    <button type="button" class="add_item_link btn btn-block btn-primary text-white py-3 px-5" data-collection-holder-class="medias">Add a
                         media</button>
                 </div>
             </div>
