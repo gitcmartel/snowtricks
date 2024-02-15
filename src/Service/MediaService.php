@@ -36,7 +36,7 @@ class MediaService
      */
     public function deleteMedia(string $mediaPath) {
         $mediaName = basename($mediaPath);
-        if ($mediaName !== 'hero_1.jpg') {
+        if ($mediaName !== 'hero_1.jpg' && $mediaName !== "" && file_exists($this->uploadDirectory . '\\' . $mediaName)) {
             unlink($this->uploadDirectory . '\\' . $mediaName);
         }
     }
