@@ -89,6 +89,7 @@ class TricksController extends AbstractController
             foreach ($form->get('medias') as $formMedia) {
                 $uploadedFile = $formMedia->get('path')->getData();
                 $media = $formMedia->getData(); 
+                
                 if ($uploadedFile !== null) {
                     $type = $mimeService->getType($uploadedFile);
                     $newMediaFileName = $mediaService->moveUploadedFile($uploadedFile);
@@ -102,6 +103,17 @@ class TricksController extends AbstractController
                         $media->setPath('medias/' . $newMediaFileName);
                         $media->setType($type);                    
                     }
+                }
+
+                $videoLink = $formMedia->get('link')->getData();
+                if ($videoLink !== null) {
+                    $media->setPath($videoLink);
+                    $media->setType("video");  
+                }
+
+                //If the media is empty we remove it
+                if ($media->getPath() === null) {
+                    $tricks->removeMedia($media);
                 }
             }
             //endregion
@@ -136,5 +148,27 @@ class TricksController extends AbstractController
         $entityManager->flush();
 
         return $this->json(['message' => 'Le tricks a été supprimé avec succès']);
+    }
+
+    #[Route('/tricks/new', name: 'app_tricks_new')]
+    public function new(Request $request, EntityManagerInterface $entityManager, 
+    TricksRepository $tricksRepository): response {
+        $tricks = new Tricks();
+        $form = $this->createForm(TricksFormType::class, $tricks);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Saving data
+            $entityManager->persist($tricks);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('tricks/tricks.html.twig', [
+            'controller_name' => 'TricksController', 
+            'formTricks' => $form->createView(),
+        ]);
     }
 }
