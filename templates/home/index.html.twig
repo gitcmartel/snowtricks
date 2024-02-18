@@ -22,6 +22,16 @@
 <button id="scroll-button" class="scroll-button"><i class="fa-solid fa-circle-chevron-down fa-2xl" id="scroll-icon"></i></button>
 <!-- End Scrolling buttons -->
 
+<!-- Add new tricks -->
+<div class="d-flex justify-content-end me-5 mt-4">
+    {% if is_granted('ROLE_USER') %}
+        <a class="btn btn-block btn-primary text-white py-3 px-5" href="{{ path('app_tricks_edit', {'tricksId' : 0}) }}">
+            Add a new tricks
+        </a>
+    {% endif %}
+</div>
+<!-- End Add new tricks -->
+
 <div class="site-section" id="postList">
     <div class="container">
         <div class="row justify-content-evenly" id="pages">
