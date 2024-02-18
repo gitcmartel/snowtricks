@@ -54,7 +54,8 @@
                     {{ form_widget(media.tricks )}}
                     <div class="media" id="media-{{ media.path.vars.id }}">
                         {% if media.vars.value.type == "image" %}
-                        <img src="{{ asset(media.vars.value.path) }}" id="image-{{ media.path.vars.id }}" alt="">
+                        <img src="{{ asset(media.vars.value.path) }}" id="image-{{ media.path.vars.id }}" class="media-image" 
+                        data-image-fullscreen = "fullscreen-img-{{ media.path.vars.id }}" alt="">
                         {% elseif media.vars.value.type == "video" %}
                         <iframe width="100%" height="100%" src="{{ media.vars.value.path }}"
                             title="YouTube video player" frameborder="0"
@@ -62,6 +63,9 @@
                             allowfullscreen>
                         </iframe>
                         {% endif %}
+                    </div>
+                    <div class="fullscreen-image" id="fullscreen-img-{{ media.path.vars.id }}">
+                        <img src="{{ asset(media.vars.value.path) }}">
                     </div>
                     <div class="edit-buttons-container">
                         <div class="w-100 d-flex justify-content-end">
