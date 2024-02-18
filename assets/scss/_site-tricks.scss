@@ -66,6 +66,10 @@
       width: 100%;
       object-fit: cover;
     }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .tricks-description {
@@ -80,15 +84,18 @@
 #fileList {
     list-style-type: none;
 }
+
 .fileItem {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
+
 .fileName {
     flex-grow: 1;
     margin-right: 10px;
 }
+
 .removeButton {
     background:none;
     color: red;
@@ -98,4 +105,26 @@
     &:hover {
         color: darkred;
     }
+}
+
+.fullscreen-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.fullscreen-image img {
+    max-width: 90%;
+    max-height: 90%;
 }
