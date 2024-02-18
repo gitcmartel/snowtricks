@@ -41,11 +41,19 @@ class TricksController extends AbstractController
     {
 
         //Fetching data
-        $tricks = $tricksRepository->findOneById($tricksId);
+
         $originalMedias = new ArrayCollection();
 
-        foreach($tricks->getMedias() as $media) {
-            $originalMedias->add($media);
+        if ($tricksId === '0') {
+            $tricks = new Tricks();
+            $tricks->setId(0);
+            $tricks->setImage('images/hero_1.jpg');
+        } else {
+            $tricks = $tricksRepository->findOneById($tricksId);
+
+            foreach($tricks->getMedias() as $media) {
+                $originalMedias->add($media);
+            }
         }
 
         $form = $this->createForm(TricksFormType::class, $tricks);
@@ -67,7 +75,7 @@ class TricksController extends AbstractController
             if ($uploadedFile == true) {
                 $newTricksImageFileName = $mediaService->moveUploadedFile($uploadedFile);
                 $mediaService->deleteMedia($tricks->getImage());
-                $tricks->setImage('images/tricks/' . $newTricksImageFileName);
+                $tricks->setImage('medias/' . $newTricksImageFileName);
             }
             //endregion
 
@@ -141,34 +149,12 @@ class TricksController extends AbstractController
         }
 
         //Deletes the tricks main image
-        $mediaService->deleteMedia($media->getImage());
+        $mediaService->deleteMedia($tricks->getImage());
 
         //Deletes the tricks
         $entityManager->remove($tricks);
         $entityManager->flush();
 
         return $this->json(['message' => 'Le tricks a été supprimé avec succès']);
-    }
-
-    #[Route('/tricks/new', name: 'app_tricks_new')]
-    public function new(Request $request, EntityManagerInterface $entityManager, 
-    TricksRepository $tricksRepository): response {
-        $tricks = new Tricks();
-        $form = $this->createForm(TricksFormType::class, $tricks);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            //Saving data
-            $entityManager->persist($tricks);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_home');
-        }
-
-        return $this->render('tricks/tricks.html.twig', [
-            'controller_name' => 'TricksController', 
-            'formTricks' => $form->createView(),
-        ]);
     }
 }
