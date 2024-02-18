@@ -6,6 +6,10 @@ export default class TricksEdit {
     radioImage;
     radioVideo;
     btnValidateEditMedia;
+    mediaImages;
+    mediaImagesFullScreen;
+    seeMediasButton;
+    mediaList;
 
     constructor(modalDialog) {
         this.deleteButtons = document.querySelectorAll('.delete-hero-image, .delete-media');
@@ -14,7 +18,13 @@ export default class TricksEdit {
         this.radioVideo = document.querySelectorAll('.radio-video');
         this.btnValidateEditMedia = document.querySelectorAll('.btn-validate-edit-media');
         this.deleteTricksButton = document.getElementById('deleteTricks');
+        this.mediaImages = document.querySelectorAll('.media-image');
+        this.mediaImagesFullScreen = document.querySelectorAll('.fullscreen-image');
+        this.seeMediasButton = document.getElementById("seeMediasButton");
+        this.mediaList = document.getElementById("mediaList");
         
+        this.seeMediasButton.addEventListener("click", this.showTricks.bind(this));
+
         this.deleteButtons.forEach((button) => {
             button.addEventListener('click', () => {
 
@@ -98,6 +108,20 @@ export default class TricksEdit {
         this.radioVideo.forEach((radio) => {
             radio.addEventListener('change', () => {
                 this.handleVideoRadioChange(radio);
+            });
+        });
+
+        this.mediaImages.forEach((image) => {
+            image.addEventListener('click', () => {
+                const fullScreenImageId = image.getAttribute('data-image-fullscreen');
+                const imageFullScreen = document.getElementById(fullScreenImageId);
+                imageFullScreen.style.display = "flex"; 
+            });
+        });
+
+        this.mediaImagesFullScreen.forEach((image) => {
+            image.addEventListener('click', () => {
+                image.style.display = "none"; 
             });
         });
     }
@@ -306,4 +330,11 @@ export default class TricksEdit {
 
         return div;
     }
+
+    /**
+     * Show the list of tricks on mobile devices
+     */
+        showTricks() {
+            this.mediaList.classList.remove("d-none");
+        }
 }
