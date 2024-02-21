@@ -47,8 +47,7 @@ class TricksController extends AbstractController
         if ($tricksId === '0') {
             $tricks = new Tricks();
             $tricks->setId(0);
-            $tricks->setImage('images/hero_1.jpg');
-            $tricks->setCreationDate(new \DateTime());
+            $tricks->setImage('images/hero_1.jpg');           
         } else {
             $tricks = $tricksRepository->findOneById($tricksId);
 
@@ -77,6 +76,14 @@ class TricksController extends AbstractController
                 $newTricksImageFileName = $mediaService->moveUploadedFile($uploadedFile);
                 $mediaService->deleteMedia($tricks->getImage());
                 $tricks->setImage('medias/' . $newTricksImageFileName);
+            }
+            //endregion
+
+            //region Adding dateTime
+            if ($tricksId === 0) {
+                $tricks->setCreationDate(new \DateTime());
+            } else {
+                $tricks->setModificationDate(new \DateTime());
             }
             //endregion
 
