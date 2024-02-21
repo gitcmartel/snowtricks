@@ -41,6 +41,9 @@ class Tricks
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $creation_date = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -175,6 +178,18 @@ class Tricks
     public function setImage(string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creation_date;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creation_date): static
+    {
+        $this->creation_date = $creation_date;
 
         return $this;
     }
