@@ -48,6 +48,7 @@ class TricksController extends AbstractController
             $tricks = new Tricks();
             $tricks->setId(0);
             $tricks->setImage('images/hero_1.jpg');
+            $tricks->setCreationDate(new \DateTime());
         } else {
             $tricks = $tricksRepository->findOneById($tricksId);
 
