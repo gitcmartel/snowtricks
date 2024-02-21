@@ -44,6 +44,9 @@ class Tricks
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creation_date = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $modification_date = null;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -190,6 +193,18 @@ class Tricks
     public function setCreationDate(\DateTimeInterface $creation_date): static
     {
         $this->creation_date = $creation_date;
+
+        return $this;
+    }
+
+    public function getModificationDate(): ?\DateTimeInterface
+    {
+        return $this->modification_date;
+    }
+
+    public function setModificationDate(?\DateTimeInterface $modification_date): static
+    {
+        $this->modification_date = $modification_date;
 
         return $this;
     }
