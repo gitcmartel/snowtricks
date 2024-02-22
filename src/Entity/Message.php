@@ -40,7 +40,7 @@ class Message
         return $this->creation_date;
     }
 
-    public function setCreationDate(\DateTimeInterface $creation_date): static
+    public function setCreationDate(?\DateTimeInterface $creation_date): static
     {
         $this->creation_date = $creation_date;
 
