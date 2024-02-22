@@ -3,35 +3,66 @@
 namespace App\Controller;
 
 use App\Form\TricksFormType;
+use App\Form\MessageFormType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\TricksRepository;
 use App\Repository\MediaRepository;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\MediaService;
 use App\Service\MimeService;
 use App\Entity\Tricks;
+use App\Entity\Message;
 
 class TricksController extends AbstractController
 {
     #[Route('/tricks/{tricksId}', name: 'app_tricks')]
-    public function index($tricksId, TricksRepository $trickRepository, MediaRepository $mediaRepository): Response
+    public function index($tricksId, TricksRepository $trickRepository, MediaRepository $mediaRepository, 
+    MessageRepository $messageRepository, Request $request, Security $security, EntityManagerInterface $entityManager): Response
     {
-        //Fetching the tricks and media data
+        //Fetching the tricks, messages, and media data
         $tricks = $trickRepository->findOneById($tricksId);
         $medias = $mediaRepository->findByTricks($tricksId);
+        $messages = $messageRepository->findMessageByPage($tricksId, 1, 5);
+        $message = new Message();
 
         if ($tricks == null) {
             return $this->redirectToRoute('app_not_found');
         }
 
+        $form = $this->createForm(MessageFormType::class, $message);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('content') !== "") {
+                $message->setCreationDate(new \DateTime());
+                $message->setUser($security->getUser());
+                $message->setTricks($tricks);
+
+                $entityManager->persist($message);
+                $entityManager->flush();
+
+                //Refreshing messages data
+                $messages = $messageRepository->findMessageByPage($tricksId, 1, 5);
+
+                //Creating a new form
+                $message = new Message();
+                $form = $this->createForm(MessageFormType::class, $message);
+            }
+        }
+
         return $this->render('tricks/index.html.twig', [
             'controller_name' => 'TricksController',
             'tricks' => $tricks, 
-            'medias' => $medias
+            'medias' => $medias, 
+            'messages' => $messages, 
+            'formMessage' => $form->createView()
         ]);
     }
 
