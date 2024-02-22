@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Media;
 use App\Entity\Tricks;
 use App\Entity\TricksGroup;
 use App\Entity\User;
