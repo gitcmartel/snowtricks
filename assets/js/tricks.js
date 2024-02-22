@@ -1,7 +1,10 @@
 import TricksEdit from './classes/TricksEdit.js';
 import ModalMessage from './classes/ModalMessage.js';
-import InputFileList from './classes/InputFileList.js';
+import TricksImage from './classes/TricksImage.js';
+import SeeMediaButton from './classes/SeeMediaButton.js';
+
 
 
 let tricksEdit = new TricksEdit(new ModalMessage);
-//let inputFileList = new InputFileList("tricks_form_addMedias", "fileList");
+let tricksImage = new TricksImage();
+let seeMediaButton = new SeeMediaButton();
