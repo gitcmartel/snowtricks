@@ -26,6 +26,13 @@ return [
         'path' => './assets/js/tricks.js',
         'entrypoint' => true,
     ],
+    'message' => [
+        'path' => './assets/js/message.js',
+        'entrypoint' => true,
+    ],
+    'tinymce' => [
+        'version' => '6.8.3',
+    ],
     '@hotwired/stimulus' => [
         'version' => '3.2.2',
     ],
