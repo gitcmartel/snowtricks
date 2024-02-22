@@ -390,22 +390,7 @@ h1, h2, h3, h4, h5,
 }
 
 .site-footer {
-  padding: 4em 0;
-  background: #efba6c;
-}
-@media (min-width: 768px) {
-  .site-footer {
-    padding: 8em 0;
-  }
-}
-.site-footer .border-top {
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-.site-footer ul li {
-  margin-bottom: 10px;
-}
-.site-footer .footer-heading {
-  font-size: 16px;
+  height: 15vh;
 }
 
 .bg-text-line {
@@ -555,6 +540,12 @@ h1, h2, h3, h4, h5,
 
 .w-90 {
   width: 90%;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 
 /* Navbar */
@@ -1396,8 +1387,8 @@ h1, h2, h3, h4, h5,
 }
 
 .slide {
-  height: 100vh;
-  min-height: 900px;
+  height: 60vh;
+  min-height: 60vh;
   background-size: cover;
 }
 
@@ -2267,6 +2258,12 @@ h1, h2, h3, h4, h5,
   display: none;
 }
 
+.carousel-item img {
+  height: 60vh;
+  object-fit: cover;
+  object-position: top;
+}
+
 .tricks-edit-buttons-hero {
   position: relative;
   z-index: 3;
@@ -2376,4 +2373,17 @@ h1, h2, h3, h4, h5,
 .fullscreen-image img {
   max-width: 90%;
   max-height: 90%;
+}
+
+#btnNewMessage {
+  max-height: 3rem;
+}
+
+.add-comment-text {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .add-comment-text {
+    width: 50%;
+  }
 }/*# sourceMappingURL=style.css.map */
