@@ -1,0 +1,11 @@
+{% for message in messages %}
+<div class="col-12 mb-4">
+    <div class="message-entry-1 h-100">
+        <div class="d-flex flex-column px-0 px-md-5">
+            <div class="d-none">{{ message.id }}</div>
+            <div class="fst-italic fw-bold mb-3">Written by {{ message.user.username }} on {{ message.creationDate.format('d/m/Y H:i') }}</div>
+            <div>{{ message.content }}</div>
+        </div>
+    </div>
+</div>
+{% endfor %}
