@@ -21,6 +21,18 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+    public function findMessageByPage($tricksId, $page = 1, $pageSize = 5)
+    {
+        $query = $this->createQueryBuilder('messagespack')
+            ->where('messagespack.tricks = :tricksId') 
+            ->setParameter('tricksId', $tricksId) 
+            ->orderBy('messagespack.id', 'DESC')
+            ->setFirstResult(($page - 1) * $pageSize)
+            ->setMaxResults($pageSize);
+
+        return $query->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Message[] Returns an array of Message objects
 //     */
