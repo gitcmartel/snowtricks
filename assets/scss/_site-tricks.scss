@@ -14,6 +14,12 @@
     display: none;
 }
 
+.carousel-item img {
+    height: 60vh;
+    object-fit: cover;
+    object-position: top;
+}
+
 .tricks-edit-buttons-hero {
     position:relative;
     z-index: 3;
@@ -127,4 +133,16 @@
 .fullscreen-image img {
     max-width: 90%;
     max-height: 90%;
+}
+
+#btnNewMessage {
+    max-height: 3rem;
+}
+
+.add-comment-text {
+    width: 100%;
+
+    @media (min-width: 768px) {
+        width: 50%; // À partir de la taille moyenne et plus grande, l'élément occupe 50% de la largeur
+      }
 }
