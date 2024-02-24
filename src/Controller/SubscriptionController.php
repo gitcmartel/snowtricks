@@ -10,11 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
+use App\Service\PhotoService;
 
 class SubscriptionController extends AbstractController
 {
     #[Route('/subscription', name: 'app_subscription')]
-    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, 
+    PhotoService $photoService): Response
     {
         $user = new User();
 
@@ -23,11 +25,24 @@ class SubscriptionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //region password
             $hashedPassword = $passwordHasher->hashPassword(
                 $user, 
                 $user->getPassword()
             );
             $user->setPassword($hashedPassword);
+            //endregion
+
+            //region photo
+            $uploadedFile = $form->get('photo')->getData();
+
+            //Move the uploaded image 
+            if ($uploadedFile == true) {
+                $newPhotoImageFileName = $photoService->moveUploadedFile($uploadedFile);
+                $user->setPhoto('photos/' . $newPhotoImageFileName);
+            }
+            //endregion
+
             $entityManager->persist($user);
             $entityManager->flush();
 
