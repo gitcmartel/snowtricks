@@ -38,6 +38,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <div class="col-md-12 mb-5">
+                            {{ form_label(formUser.photo, 'Photo', {'label_attr': {'class': 'w-100 text-center mb-2'}})}}
+                            {{ form_widget(formUser.photo )}}
+                            <div class="text-danger">
+                                {{ form_errors(formUser.photo) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-md-12 mr-auto d-flex justify-content-center">
                             <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5"
                                 value="Create an account">
