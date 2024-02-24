@@ -26,6 +26,7 @@ class TricksController extends AbstractController
     MessageRepository $messageRepository, Request $request, Security $security, EntityManagerInterface $entityManager): Response
     {
         //Fetching the tricks, messages, and media data
+        $beginMessageAnchor = '';
         $tricks = $trickRepository->findOneById($tricksId);
         $medias = $mediaRepository->findByTricks($tricksId);
         $messages = $messageRepository->findMessageByPage($tricksId, 1, 5);
@@ -54,6 +55,7 @@ class TricksController extends AbstractController
                 //Creating a new form
                 $message = new Message();
                 $form = $this->createForm(MessageFormType::class, $message);
+                $beginMessageAnchor = 'beginMessagesAnchor';
             }
         }
 
@@ -62,6 +64,7 @@ class TricksController extends AbstractController
             'tricks' => $tricks, 
             'medias' => $medias, 
             'messages' => $messages, 
+            'scrollTo' => $beginMessageAnchor, 
             'formMessage' => $form->createView()
         ]);
     }
