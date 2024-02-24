@@ -19,6 +19,17 @@ export default class MessagesList {
         this.btnLoadMoreMessages = document.getElementById("btnLoadMoreMessages");
 
         //Adding listeners
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var beginMessageAnchor = document.getElementById("beginMessagesAnchor");
+            if (beginMessageAnchor) {
+                beginMessageAnchor.scrollIntoView();
+            }
+        });
+
+        if (this.beginMessageAnchor !== null) {
+
+        }
+
         this.btnLoadMoreMessages.addEventListener('click', () => {
             if (this.loading === false && this.stopLoadingMessages === false) {
                 this.loading = true;
