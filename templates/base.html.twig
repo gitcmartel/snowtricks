@@ -44,9 +44,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Tricks</a>
-                                </li>
-                                <li class="nav-item">
                                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                                     <a class="nav-link" href="{{ path('app_logout') }}">Sign out</a>
                                     {% else %}
