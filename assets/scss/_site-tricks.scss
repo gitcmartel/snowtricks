@@ -146,3 +146,10 @@
         width: 50%; // À partir de la taille moyenne et plus grande, l'élément occupe 50% de la largeur
       }
 }
+
+.user-photo img {
+    height: 5vh;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+}
