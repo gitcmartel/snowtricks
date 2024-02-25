@@ -4,7 +4,17 @@
         <div class="d-flex flex-column px-0 px-md-5">
             <div class="d-none">{{ message.id }}</div>
             <div class="fst-italic fw-bold mb-3">Written by {{ message.user.username }} on {{ message.creationDate.format('d/m/Y H:i') }}</div>
-            <div>{{ message.content }}</div>
+            <div class="d-flex">
+                <div class="user-photo me-3">
+                    {% if message.user.photo != null %}
+                        <img src="{{ asset(message.user.photo) }}" alt="">
+                    {% else %}
+                        <img src="{{ asset('photos/default.png') }}" alt="">
+                    {% endif %}
+                </div>
+                <div>{{ message.content }}</div>
+            </div>
+            
         </div>
     </div>
 </div>
