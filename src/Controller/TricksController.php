@@ -114,7 +114,7 @@ class TricksController extends AbstractController
             //endregion
 
             //region Adding dateTime
-            if ($tricksId === 0) {
+            if ($tricksId === '0') {
                 $tricks->setCreationDate(new \DateTime());
             } else {
                 $tricks->setModificationDate(new \DateTime());
