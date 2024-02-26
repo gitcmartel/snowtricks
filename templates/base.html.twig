@@ -108,7 +108,7 @@
         <!-- Footer -->
         <footer class="bg-light">
             <div class="container">
-                <div class="row mt-5 text-center">
+                <div class="row mt-5 text-center d-none d-md-block">
                     <div class="col-md-12 site-footer d-flex align-items-center">
                         <p class="m-0">
                             Copyright &copy;
@@ -116,32 +116,35 @@
                         </p>
                     </div>
                 </div>
-            </div>
-            <!-- Sticky footer for small devices -->
-                <div class="sticky-footer bg-light d-flex justify-content-around d-md-none ">
-                    <div>
-                        <a class="nav-link active" href="{{ path('app_home') }}">
-                            <i class="fa-solid fa-house"></i>
-                        </a>
-                    </div>
-                    <div>
-                        <a class="nav-link" href="{{ path('app_subscription') }}">
-                            <i class="fa-solid fa-bookmark"></i>
-                        </a>
-                    </div>
-                    <div>
-                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                            <a class="nav-link" href="{{ path('app_logout') }}">
-                                <i class="fa-solid fa-door-open"></i>
+                <!-- Sticky footer for small devices -->
+                <div class="row order-2">
+                    <div class="sticky-footer bg-light d-flex justify-content-around d-md-none ">
+                        <div>
+                            <a class="nav-link active" href="{{ path('app_home') }}">
+                                <i class="fa-solid fa-house"></i>
                             </a>
-                        {% else %}
-                            <a class="nav-link" href="{{ path('app_login') }}">
-                                <i class="fa-solid fa-right-to-bracket"></i>
+                        </div>
+                        <div>
+                            <a class="nav-link" href="{{ path('app_subscription') }}">
+                                <i class="fa-solid fa-bookmark"></i>
                             </a>
-                        {% endif %}
+                        </div>
+                        <div>
+                            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                <a class="nav-link" href="{{ path('app_logout') }}">
+                                    <i class="fa-solid fa-door-open"></i>
+                                </a>
+                            {% else %}
+                                <a class="nav-link" href="{{ path('app_login') }}">
+                                    <i class="fa-solid fa-right-to-bracket"></i>
+                                </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            <!-- End Sticky footer for small devices -->
+                
+                <!-- End Sticky footer for small devices -->
+            </div>
         </footer>
         <!-- End footer-->
     </div>
