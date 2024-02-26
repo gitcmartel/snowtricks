@@ -26,7 +26,7 @@
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
     <!-- Header -->
     <div class="site-wrap" id="home-section">
-        <header class="site-navbar site-navbar-target" role="banner">
+        <header class="site-navbar site-navbar-target d-none d-md-block" role="banner">
             <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ path('app_home') }}">Snowtricks</a>
@@ -117,6 +117,31 @@
                     </div>
                 </div>
             </div>
+            <!-- Sticky footer for small devices -->
+                <div class="sticky-footer bg-light d-flex justify-content-around d-md-none ">
+                    <div>
+                        <a class="nav-link active" href="{{ path('app_home') }}">
+                            <i class="fa-solid fa-house"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <a class="nav-link" href="{{ path('app_subscription') }}">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </a>
+                    </div>
+                    <div>
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <a class="nav-link" href="{{ path('app_logout') }}">
+                                <i class="fa-solid fa-door-open"></i>
+                            </a>
+                        {% else %}
+                            <a class="nav-link" href="{{ path('app_login') }}">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            <!-- End Sticky footer for small devices -->
         </footer>
         <!-- End footer-->
     </div>
