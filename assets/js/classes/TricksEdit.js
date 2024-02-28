@@ -1,5 +1,3 @@
-import 'tinymce';
-
 export default class TricksEdit {
 
     deleteButtons;
