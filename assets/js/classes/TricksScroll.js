@@ -1,3 +1,5 @@
+import TricksDelete from "./TricksDelete.js";
+
 export default class TricksScroll
 {
     page;
@@ -53,6 +55,8 @@ export default class TricksScroll
                     this.overlay.classList.add("d-none");
                 }, 500);
                 this.loading = false;
+                //Adding delete listeners
+                tricksDelete = new TricksDelete();
             }
         };
 
