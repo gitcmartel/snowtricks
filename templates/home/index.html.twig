@@ -11,7 +11,8 @@
             <div class="row catch-phrase">
                 <div class="col-md-5">
                     <h1 class="mb-3 text-white">Snowtricks</h1>
-                    <p>Du simple ollie aux doubles corks, chaque saut est une histoire. Rejoignez-nous pour explorer l'univers des figures de snowboard !</p>
+                    <p>Du simple ollie aux doubles corks, chaque saut est une histoire. Rejoignez-nous pour explorer
+                        l'univers des figures de snowboard !</p>
                 </div>
             </div>
         </div>
@@ -19,15 +20,16 @@
 </div>
 
 <!-- Scrolling buttons -->
-<button id="scroll-button" class="scroll-button"><i class="fa-solid fa-circle-chevron-down fa-2xl" id="scroll-icon"></i></button>
+<button id="scroll-button" class="scroll-button"><i class="fa-solid fa-circle-chevron-down fa-2xl"
+        id="scroll-icon"></i></button>
 <!-- End Scrolling buttons -->
 
 <!-- Add new tricks -->
 <div class="d-flex justify-content-end me-5 mt-4">
     {% if is_granted('ROLE_USER') %}
-        <a class="btn btn-block btn-primary text-white py-3 px-5" href="{{ path('app_tricks_edit', {'tricksId' : 0}) }}">
-            Add a new tricks
-        </a>
+    <a class="btn btn-block btn-primary text-white py-3 px-5" href="{{ path('app_tricks_edit', {'tricksId' : 0}) }}">
+        Add a new tricks
+    </a>
     {% endif %}
 </div>
 <!-- End Add new tricks -->
@@ -41,25 +43,25 @@
 </div> <!-- END .site-section -->
 
 <!-- Modal -->
-<div class="modal fade" id="deleteTricksModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="deleteTricksModalLabel" aria-hidden="true">
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteTricksModalLabel">Snowtricks</h5>
+                <h5 class="modal-title" id="staticBackdropLabel">Delete Tricks</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="modalMessage">Please confirm deletion of this tricks ?</div>
+            <div class="modal-body" id="modalMessage"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                <a href="{{ path('app_tricks_delete', {'id' : 0}) }}" type="button" class="btn btn-primary" id="modalYesButton">Yes</a>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="modalYesButton">Yes</button>
             </div>
         </div>
     </div>
 </div>
 <!-- End of Modal -->
 {% endblock %}
-    
+
 {% block js %}
 
 {% endblock %}
