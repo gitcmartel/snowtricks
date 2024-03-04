@@ -19,7 +19,8 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
-            'tricksList' => $tricks
+            'tricksList' => $tricks, 
+            'pageNumber' => 1
         ]);
     }
 
@@ -29,7 +30,8 @@ class HomeController extends AbstractController
         if ($request->isXmlHttpRequest() == true) {
             $tricks = $tricksRepository->findTricksByPage($page, 15);
             return $this->render('_partials/_tricks.html.twig', [
-                'tricksList' => $tricks
+                'tricksList' => $tricks,
+                'pageNumber' => $page
             ]);
         }
 
