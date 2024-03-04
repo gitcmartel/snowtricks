@@ -12,7 +12,7 @@ class NotFoundController extends AbstractController
     public function index(): Response
     {
         return $this->render('not_found/index.html.twig', [
-            'controller_name' => 'NotFoundController',
+            'controller_name' => 'NotFoundController'
         ]);
     }
 }
