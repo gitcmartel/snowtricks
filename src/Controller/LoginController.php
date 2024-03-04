@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LoginController extends AbstractController
 {
@@ -24,13 +25,9 @@ class LoginController extends AbstractController
         // Last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        //Display an erorr message if there is one, and a success if the authentication is a success
-        if ($error) {
-            $this->addFlash('danger', 'Échec de l\'authentification. Veuillez réessayer.');
-        }
-
         return $this->render('login/index.html.twig', [
-            'last_username' => $lastUsername
+            'last_username' => $lastUsername, 
+            'errorMessage' => $error == null ? '' : $error->getMessage()
         ]);
     }
 
