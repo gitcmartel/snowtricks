@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageService
 {
-    private $uploadDirectory;
+    protected $uploadDirectory;
 
     public function __construct(string $uploadDirectory)
     {
