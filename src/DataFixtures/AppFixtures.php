@@ -30,6 +30,7 @@ class AppFixtures extends Fixture
             $user->setUsername('User'.$i);
             $user->setEmail('user'.$i.'@gmail.com');
             $user->setRoles(['ROLE_USER']);
+            $user->setPhoto('photos/default.png');
             $user->setPassword($this->passwordHasher->hashPassword($user, 'passwordtest!'.$i));
             $this->addReference('user'.$i, $user);
             $manager->persist($user);
@@ -58,7 +59,7 @@ class AppFixtures extends Fixture
             $tricks->setUser($user);
             $tricks->setTricksGroup($tricksGroup);
             $tricks->setName('Tricks'.$i);
-            $tricks->setImage('images/img_1.jpg');
+            $tricks->setImage('images/hero_1.jpg');
             $tricks->setDescription('
                 Quam quidem partem accusationis admiratus sum et moleste tuli potissimum esse Atratino datam. 
                 Neque enim decebat neque aetas illa postulabat neque, id quod animadvertere poteratis, pudor 
@@ -72,20 +73,31 @@ class AppFixtures extends Fixture
             
         }
 
-        //Creation of 20 medias
+        //Creation of 40 medias images
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 40; $i++) {
             $media = new Media();
             $tricks = $this->getReference('tricks'.$i);
             $media->setTricks($tricks);
-            $media->setPath('images/img_'.rand(2, 5).'.jpg');
+            $media->setPath('medias/image-fixture-'.rand(1, 12).'.jpg');
             $media->setType('image');
             $manager->persist($media);
         }
 
-        //Creation of 20 messages
+        //Creation of 40 medias videos
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 40; $i++) {
+            $media = new Media();
+            $tricks = $this->getReference('tricks'.$i);
+            $media->setTricks($tricks);
+            $media->setPath('https://www.youtube.com/embed/CzDjM7h_Fwo?si=_noms-hKOdUScagI');
+            $media->setType('video');
+            $manager->persist($media);
+        }
+
+        //Creation of 40 messages
+
+        for ($i = 0; $i < 40; $i++) {
             $message = new Message();
             $user = $this->getReference('user'.rand(0, 9));
             $message->setUser($user);
