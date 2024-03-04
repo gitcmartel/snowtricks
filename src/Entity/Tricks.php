@@ -41,7 +41,7 @@ class Tricks
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $creation_date = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
