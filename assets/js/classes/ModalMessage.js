@@ -9,7 +9,9 @@ export default class ModalMessage
     }
 
     setModalMessage(message) {
-        this.modalMessage.innerHTML = message;
+        if (message) {
+            this.modalMessage.innerHTML = message;
+        }
     }
 
     showModal() {
