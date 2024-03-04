@@ -26,7 +26,7 @@ class MediaFormType extends AbstractType
                 'attr' => [
                     'type' => 'file',
                     'accept' => '.png, .jpeg, .jpg, .svg',
-                    'class' => 'form-control w-90'
+                    'class' => 'form-control w-90 h-auto'
                 ]
             ])
             ->add('link', TextType::class, [
