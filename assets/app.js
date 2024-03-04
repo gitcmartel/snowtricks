@@ -7,7 +7,6 @@
 
 import './styles/bootstrap.min.css';
 import './styles/style.css';
-import './styles/aos.css';
 import './styles/jquery-ui.css';
 import './styles/jquery.fancybox.min.css';
 import './styles/magnific-popup.css';
