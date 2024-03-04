@@ -54,8 +54,8 @@
                     {{ form_widget(media.tricks )}}
                     <div class="media" id="media-{{ media.path.vars.id }}">
                         {% if media.vars.value.type == "image" %}
-                        <img src="{{ asset(media.vars.value.path) }}" id="image-{{ media.path.vars.id }}" class="media-image" 
-                        data-image-fullscreen = "fullscreen-img-{{ media.path.vars.id }}" alt="">
+                        <img src="{{ asset(media.vars.value.path) }}" id="image-{{ media.path.vars.id }}"
+                            class="media-image" data-image-fullscreen="fullscreen-img-{{ media.path.vars.id }}" alt="">
                         {% elseif media.vars.value.type == "video" %}
                         <iframe class="rounded" width="100%" height="100%" src="{{ media.vars.value.path }}"
                             title="YouTube video player" frameborder="0"
@@ -93,31 +93,42 @@
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input radio-image" type="radio" name="flexRadio{{ media.path.vars.id }}" id="flexRadioImage{{ media.path.vars.id }}" 
-                                                        data-video-element="add-video-{{ media.path.vars.id }}" data-image-element="add-image-{{ media.path.vars.id }}" checked>
-                                                        <label class="form-check-label" value="image" for="flexRadioImage{{ media.path.vars.id }}">
+                                                        <input class="form-check-input radio-image" type="radio"
+                                                            name="flexRadio{{ media.path.vars.id }}"
+                                                            id="flexRadioImage{{ media.path.vars.id }}"
+                                                            data-video-element="add-video-{{ media.path.vars.id }}"
+                                                            data-image-element="add-image-{{ media.path.vars.id }}"
+                                                            checked>
+                                                        <label class="form-check-label" value="image"
+                                                            for="flexRadioImage{{ media.path.vars.id }}">
                                                             Image
                                                         </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input radio-video" type="radio" name="flexRadio{{ media.path.vars.id }}" id="flexRadioVideo{{ media.path.vars.id }}" 
-                                                        data-video-element="add-video-{{ media.path.vars.id }}" data-image-element="add-image-{{ media.path.vars.id }}">
-                                                        <label class="form-check-label" value="video" for="flexRadioVideo{{ media.path.vars.id }}">
+                                                        <input class="form-check-input radio-video" type="radio"
+                                                            name="flexRadio{{ media.path.vars.id }}"
+                                                            id="flexRadioVideo{{ media.path.vars.id }}"
+                                                            data-video-element="add-video-{{ media.path.vars.id }}"
+                                                            data-image-element="add-image-{{ media.path.vars.id }}">
+                                                        <label class="form-check-label" value="video"
+                                                            for="flexRadioVideo{{ media.path.vars.id }}">
                                                             Video
                                                         </label>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="d-flex flex-column">
                                                     <div class="mb-3" id="add-image-{{ media.path.vars.id }}">
                                                         <label for="{{ media.path.vars.id }}" role="button">
                                                             Select an image file
                                                         </label>
-                                                        {{ form_widget(media.path, {'attr': {'class': 'edit-media d-none'}})
+                                                        {{ form_widget(media.path, {'attr': {'class': 'edit-media
+                                                        d-none'}})
                                                         }}
                                                         <div id="showImagePath{{ media.path.vars.id }}"></div>
                                                     </div>
-                                                    <div class="input-group mb-3 d-none" id="add-video-{{ media.path.vars.id }}">
+                                                    <div class="input-group mb-3 d-none"
+                                                        id="add-video-{{ media.path.vars.id }}">
                                                         {{ form_label(media.link) }}
                                                         {{ form_widget(media.link, {'attr': {'class': 'edit-media
                                                         w-100'}}) }}
@@ -127,10 +138,14 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary btn-validate-edit-media" data-bs-dismiss="modal" data-add-video-element="add-video-{{ media.path.vars.id }}" 
-                                                data-add-image-element="add-image-{{ media.path.vars.id }}" data-media-id="media-{{ media.path.vars.id }}"
-                                                data-image-element="image-{{ media.path.vars.id }}" data-video-element="video-{{ media.path.vars.id }}" 
-                                                data-type-element="{{ media.type.vars.id }}">Validate</button>
+                                                <button type="button" class="btn btn-primary btn-validate-edit-media"
+                                                    data-bs-dismiss="modal"
+                                                    data-add-video-element="add-video-{{ media.path.vars.id }}"
+                                                    data-add-image-element="add-image-{{ media.path.vars.id }}"
+                                                    data-media-id="media-{{ media.path.vars.id }}"
+                                                    data-image-element="image-{{ media.path.vars.id }}"
+                                                    data-video-element="video-{{ media.path.vars.id }}"
+                                                    data-type-element="{{ media.type.vars.id }}">Validate</button>
                                             </div>
                                         </div>
                                     </div>
@@ -156,7 +171,8 @@
                             {{ form_widget(formTricks.medias.vars.prototype.type)|e('html_attr') }}
                             {{ form_widget(formTricks.medias.vars.prototype.id)|e('html_attr') }}
                     "></ul>
-                    <button type="button" class="add_item_link btn btn-block btn-primary text-white py-3 px-5" data-collection-holder-class="medias">Add a
+                    <button type="button" class="add_item_link btn btn-block btn-primary text-white py-3 px-5"
+                        data-collection-holder-class="medias">Add a
                         media</button>
                 </div>
             </div>
@@ -174,7 +190,8 @@
                         {{ form_widget(formTricks.name, {'attr': {'class': "form-control", 'placeholder': "Titre"}} )}}
                     </div>
                     <div class="my-4">
-                        {{ form_widget(formTricks.description, {'attr': {'class': "form-control tricks-description tinymce-editor",
+                        {{ form_widget(formTricks.description, {'attr': {'class': "form-control tricks-description
+                        tinymce-editor",
                         'placeholder': "Description"}} )}}
                     </div>
                     <div class="row mb-3">
@@ -201,6 +218,24 @@
     </section>
     <!-- End tricks description -->
 
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                        id="modalYesButton">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- User Modifications -->
     <section id="modifications">
         {{ form_widget(formTricks.isHeroImageDeleted) }}
