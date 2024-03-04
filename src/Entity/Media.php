@@ -23,7 +23,7 @@ class Media
 
     #[ORM\ManyToOne(inversedBy: 'medias')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?tricks $tricks = null;
+    private ?Tricks $tricks = null;
 
     public function getId(): ?int
     {
