@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -63,18 +63,25 @@
         </header>
         <!--End header -->
 
-        <!-- Flash messages -->
-        {% for label, messages in app.flashes %}
-        {% for message in messages %}
-        <div class="alert alert-{{ label }} alert-dismissible" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-            <div class="alert-message">
-                {{ message|raw }}
+        <!-- Toast messages -->
+        {% if app.session.get('toastMessage') is not empty %}
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 100">
+            <div id="appToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Snowtricks</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ app.session.get('toastMessage') }}
+                </div>
             </div>
         </div>
-        {% endfor %}
-        {% endfor %}
-        <!-- End flash messages -->
+        {% endif %}
+
+        {# Clear the toast message from the session #}
+        {% do app.session.remove('toastMessage') %}
+
+        <!-- End Toast messages -->
 
         <!-- Spinner -->
         <div class="spinner-container d-none" id="spinner-container">
@@ -114,18 +121,18 @@
                         </div>
                         <div>
                             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                <a class="nav-link" href="{{ path('app_logout') }}">
-                                    <i class="fa-solid fa-door-open"></i>
-                                </a>
+                            <a class="nav-link" href="{{ path('app_logout') }}">
+                                <i class="fa-solid fa-door-open"></i>
+                            </a>
                             {% else %}
-                                <a class="nav-link" href="{{ path('app_login') }}">
-                                    <i class="fa-solid fa-right-to-bracket"></i>
-                                </a>
+                            <a class="nav-link" href="{{ path('app_login') }}">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                            </a>
                             {% endif %}
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- End Sticky footer for small devices -->
             </div>
         </footer>
