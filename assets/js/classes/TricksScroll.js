@@ -1,4 +1,5 @@
 import TricksDelete from "./TricksDelete.js";
+import ModalMessage from "./ModalMessage.js";
 
 export default class TricksScroll
 {
@@ -8,14 +9,16 @@ export default class TricksScroll
     spinner;
     overlay;
     stopLoadingTricks;
+    TricksDelete
 
-    constructor ()
+    constructor (tricksDelete)
     {
         this.page = 2;
         this.loading = false;
         this.pageContainer = document.getElementById("pages");
         this.overlay = document.getElementById("spinner-container");
         this.stopLoadingTricks = false;
+        this.tricksDelete = tricksDelete;
 
         //Adding listeners
         window.addEventListener('scroll', this.windowScrollListener.bind(this));
@@ -46,6 +49,11 @@ export default class TricksScroll
                         this.stopLoadingTricks = true;
                     } else {
                         this.pageContainer.insertAdjacentHTML('beforeend', html);
+                        // Ajout d'écouteurs d'événements sur les nouveaux éléments HTML
+                        const newElements = this.pageContainer.querySelectorAll('.delete-tricks-' + this.page);
+                        newElements.forEach(element => {
+                            element.addEventListener('click', this.tricksDelete.clickHandler.bind(this.tricksDelete));
+                        });
                         this.page++;
                     }
                 } else {
@@ -55,8 +63,6 @@ export default class TricksScroll
                     this.overlay.classList.add("d-none");
                 }, 500);
                 this.loading = false;
-                //Adding delete listeners
-                tricksDelete = new TricksDelete();
             }
         };
 
