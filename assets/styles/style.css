@@ -542,6 +542,10 @@ h1, h2, h3, h4, h5,
   width: 90%;
 }
 
+.w-15 {
+  width: 15%;
+}
+
 hr {
   border: 0;
   height: 1px;
