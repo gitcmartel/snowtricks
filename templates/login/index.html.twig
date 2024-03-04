@@ -21,6 +21,9 @@
                                 <input type="password" id="password" name="_password" class="form-control">
                             </div>
                         </div>
+                        <div class="text-danger mb-3">
+                            {{ errorMessage }}
+                        </div>
                         <div class="form-group row">
                             <div class="mb-4 mb-3 w-100 d-flex justify-content-center">
                                 <a href="{{ path('app_forgotten_password') }}">Forgot password ?</a>
@@ -28,6 +31,7 @@
                         </div>
                         {# If you want to control the URL the user is redirected to on success
                         <input type="hidden" name="_target_path" value="/account"> #}
+                        {#<input type="hidden" name="_target_path" value="{{ path('app_home', {'toastMessage': 'Connexion success. Welcome !'}) }}">#}
                         <div class="form-group row">
                             <div class="col-md-12 mr-auto d-flex justify-content-center">
                                 <button type="submit" class="btn btn-block btn-primary text-white py-3 px-5">Login</button>
