@@ -36,6 +36,8 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
+        $manager->flush();
+
         //Creation of 10 tricks group
 
         for ($i = 0; $i < 10; $i++) {
@@ -60,6 +62,7 @@ class AppFixtures extends Fixture
             $tricks->setTricksGroup($tricksGroup);
             $tricks->setName('Tricks'.$i);
             $tricks->setImage('images/hero_1.jpg');
+            $tricks->setCreationDate(new DateTime());
             $tricks->setDescription('
                 Quam quidem partem accusationis admiratus sum et moleste tuli potissimum esse Atratino datam. 
                 Neque enim decebat neque aetas illa postulabat neque, id quod animadvertere poteratis, pudor 
@@ -73,27 +76,41 @@ class AppFixtures extends Fixture
             
         }
 
-        //Creation of 40 medias images
+        $manager->flush();
+
+        //Creation of 80 medias images (2 per tricks)
 
         for ($i = 0; $i < 40; $i++) {
-            $media = new Media();
-            $tricks = $this->getReference('tricks'.$i);
-            $media->setTricks($tricks);
-            $media->setPath('medias/image-fixture-'.rand(1, 12).'.jpg');
-            $media->setType('image');
-            $manager->persist($media);
+            for ($j = 0; $j <= 1; $j++) {
+                $media = new Media();
+                $tricks = $this->getReference('tricks'.$i);
+                $media->setTricks($tricks);
+                $media->setPath('medias/image-fixture-'.rand(1, 12).'.jpg');
+                $media->setType('image');
+                $manager->persist($media);
+            }
         }
 
-        //Creation of 40 medias videos
+        $manager->flush();
+
+        //Creation of 8 medias videos (2 per tricks)
 
         for ($i = 0; $i < 40; $i++) {
-            $media = new Media();
-            $tricks = $this->getReference('tricks'.$i);
-            $media->setTricks($tricks);
-            $media->setPath('https://www.youtube.com/embed/CzDjM7h_Fwo?si=_noms-hKOdUScagI');
-            $media->setType('video');
-            $manager->persist($media);
+            $videoPaths = [
+                'https://www.youtube.com/embed/CzDjM7h_Fwo?si=_noms-hKOdUScagI',
+                'https://www.youtube.com/embed/jH76540wSqU?si=wyxhODnGk9mdYbBw'
+            ];
+            for ($j = 0; $j <= 1; $j++) {
+                $media = new Media();
+                $tricks = $this->getReference('tricks'.$i);
+                $media->setTricks($tricks);
+                $media->setPath($videoPaths[$j]);
+                $media->setType('video');
+                $manager->persist($media);
+            }
         }
+
+        $manager->flush();
 
         //Creation of 40 messages
 
@@ -101,7 +118,7 @@ class AppFixtures extends Fixture
             $message = new Message();
             $user = $this->getReference('user'.rand(0, 9));
             $message->setUser($user);
-            $tricks = $this->getReference('tricks'.rand(0, 9));
+            $tricks = $this->getReference('tricks'.$i);
             $message->setTricks($tricks);
             $message->setCreationDate(new DateTime());
             $message->setContent(
