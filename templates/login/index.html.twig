@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block importmap %}{{ importmap(['app', 'toast']) }}{% endblock %}
+
 {% block body %}
     <div class="site-section">
         <div class="container">
