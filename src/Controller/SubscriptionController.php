@@ -47,7 +47,7 @@ class SubscriptionController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $toastService->setMessage('Subscription success !');
+            $toastService->setMessage('Subscription success !', 'success');
             
             return $this->redirectToRoute('app_home');
         }
