@@ -16,6 +16,7 @@ use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\MediaService;
 use App\Service\MimeService;
+use App\Service\ToastService;
 use App\Entity\Tricks;
 use App\Entity\Message;
 
@@ -71,7 +72,7 @@ class TricksController extends AbstractController
 
     #[Route('/tricks-edit/{tricksId}', name: 'app_tricks_edit')]
     public function edit($tricksId, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager, 
-        MediaRepository $mediaRepository, MediaService $mediaService, MimeService $mimeService) 
+        MediaRepository $mediaRepository, MediaService $mediaService, MimeService $mimeService, ToastService $toastService) 
     {
 
         //Fetching data
@@ -172,6 +173,7 @@ class TricksController extends AbstractController
             $entityManager->persist($tricks);
             $entityManager->flush();
 
+            $toastService->setMessage('Success !', 'success');
             return $this->redirectToRoute('app_home');
         }
 
