@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\ResetPasswordRequestFormType;
 use App\Form\ResetPasswordFormType;
 use App\Service\SendMailService;
+use App\Service\ToastService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,8 @@ class SecurityController extends AbstractController
      */
     #[Route('/forgotten-password', name: 'app_forgotten_password')]
     public function forgottenPassword(Request $resquest, EntityManagerInterface $entityManager, 
-    UserRepository $usersRepository, TokenGeneratorInterface $tokenGenerator, SendMailService $mail): Response
+    UserRepository $usersRepository, TokenGeneratorInterface $tokenGenerator, SendMailService $mail, 
+    ToastService $toastService): Response
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
 
@@ -47,8 +49,8 @@ class SecurityController extends AbstractController
 
         //If the user is not found we diplay a warning message
         if ($user === null) {
-            $this->addFlash('danger', 'Un problème est survenu lors de la tentative de renouvellement du mot de passe');
-            return $this->redirectToRoute('app_login');
+            $toastService->setMessage('Invalid Username !', 'error');
+            return $this->redirectToRoute('app_forgotten_password');
         }
 
         //Creation of the token and storing it into the database
@@ -72,8 +74,8 @@ class SecurityController extends AbstractController
             $context
         );
 
-        $this->addFlash('success', "Email envoyé avec succès");
-        return $this->redirectToRoute('app_login');
+        $toastService->setMessage('An email has been sent to reset your password !', 'success');
+        return $this->redirectToRoute('app_home');
     }
 
     /**
@@ -87,15 +89,15 @@ class SecurityController extends AbstractController
      */
     #[Route('/reset-password/{token}', name: 'app_reset_password')]
     public function resetPassword(string $token, Request $resquest, UserRepository $userRepository, 
-    EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher) : Response
+    EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, ToastService $toastService) : Response
     {
         //Fetch the user from it's token
         $user = $userRepository->findOneBy(['password_token' => $token]);
 
         //If the user is not found we display a warning
         if ($user == null) {
-            $this->addFlash('danger', 'Ce lien est invalide');
-            return $this->redirectToRoute('app_login');
+            $toastService->setMessage('Invalid link !', 'error');
+            return $this->redirectToRoute('app_home');
         }
 
         $form = $this->createForm(ResetPasswordFormType::class);
@@ -111,8 +113,8 @@ class SecurityController extends AbstractController
         //Checking if the username submitted corresponds to the active token
         //If the user is not found we display a warning
         if ($user->getUsername() !== $form->get('username')->getData()) {
-            $this->addFlash('danger', 'Ce username ne correspond pas au token');
-            return $this->redirectToRoute('app_login');
+            $toastService->setMessage('Token does not match username !', 'error');
+            return $this->redirectToRoute('app_home');
         }
 
         //Reseting the token field
@@ -126,11 +128,11 @@ class SecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
         } catch (\Exception $e) {
-            $this->addFlash('danger', 'Une erreur s\'est produite lors de la réinitialisation du mot de passe.');
-            return $this->redirectToRoute('app_login');
+            $toastService->setMessage('An error occured during the password renewal attempt !', 'error');
+            return $this->redirectToRoute('app_home');
         }
 
-        $this->addFlash('success', 'Mot de passe réinitialisé avec succès');
+        $toastService->setMessage('Password renewal success !', 'success');
         return $this->redirectToRoute('app_login');
     }
 }
