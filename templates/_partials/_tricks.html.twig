@@ -2,7 +2,7 @@
 <div class="col-lg-2 col-md-4 col-sm-6 mb-4 me-2">
     <div class="post-entry-1 h-100">
         <a href="{{ path('app_tricks', {'tricksId': tricks.id}) }}">
-            <img src="{{ asset(tricks.image) }}" alt="Image" class="img-fluid">
+            <img src="{{ asset(tricks.image) }}" alt="Image" class="img-tricks">
         </a>
         <div class="post-entry-1-contents d-flex flex-wrap justify-content-between">
             <h5><a href="{{ path('app_tricks', {'tricksId': tricks.id}) }}" >{{ tricks.name }}</a></h5>
