@@ -22,6 +22,10 @@ return [
         'path' => './assets/js/home.js',
         'entrypoint' => true,
     ],
+    'toast' => [
+        'path' => './assets/js/toast.js',
+        'entrypoint' => true,
+    ],
     'tricks' => [
         'path' => './assets/js/tricks.js',
         'entrypoint' => true,
