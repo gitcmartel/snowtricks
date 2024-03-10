@@ -14,10 +14,10 @@ class ToastService
         $this->requestStack = $requestStack;
     }
 
-    public function setMessage(string $message) {
+    public function setMessage(string $message, string $type) {
         $session = $this->requestStack->getSession();
         
-        $session->set('toastMessage', $message);
+        $session->set('toastMessage', ['type' => $type, 'message' => $message]);
         $session->save();
     }
 }
