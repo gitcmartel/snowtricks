@@ -66,13 +66,14 @@
         <!-- Toast messages -->
         {% if app.session.get('toastMessage') is not empty %}
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 100">
-            <div id="appToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            {% set toast = app.session.get('toastMessage') %}
+            <div id="appToast" class="toast {% if toast.type == 'success' %}bg-success{% elseif toast.type == 'error' %}bg-danger{% endif %}" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
                     <strong class="me-auto">Snowtricks</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
-                    {{ app.session.get('toastMessage') }}
+                    {{ toast.message }}
                 </div>
             </div>
         </div>
