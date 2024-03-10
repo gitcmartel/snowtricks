@@ -11,12 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Service\PhotoService;
+use App\Service\ToastService;
 
 class SubscriptionController extends AbstractController
 {
     #[Route('/subscription', name: 'app_subscription')]
     public function index(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, 
-    PhotoService $photoService): Response
+    PhotoService $photoService, ToastService $toastService): Response
     {
         $user = new User();
 
@@ -46,6 +47,8 @@ class SubscriptionController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $toastService->setMessage('Subscription success !');
+            
             return $this->redirectToRoute('app_home');
         }
 
