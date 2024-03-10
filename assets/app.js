@@ -9,7 +9,3 @@ import './styles/bootstrap.min.css';
 import './styles/style.css';
 import './styles/jquery-ui.css';
 import './styles/jquery.fancybox.min.css';
-import './styles/magnific-popup.css';
-import './styles/mediaelementplayer.css';
-import './styles/owl.carousel.min.css';
-import './styles/owl.theme.default.min.css';
