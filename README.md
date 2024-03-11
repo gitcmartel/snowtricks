@@ -15,6 +15,6 @@ Installation instructions :
 
 4 - Run the following command to get the project dependencies : composer update
 
-5 - Create the mysql database 'snowtricks' and execute this command ti create the table structure : php bin/console doctrine:migrations:migrate
+5 - Create the mysql database 'snowtricks' and execute this command to create the table structure : php bin/console doctrine:migrations:migrate
 
 6 - Insert the DataFixtures into the database : php bin/console doctrine:fixtures:load
