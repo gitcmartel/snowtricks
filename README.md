@@ -13,6 +13,8 @@ Installation instructions :
 
 3 - In the directory of your choice on your web server, clone the github repository, here is the command : git clone https://github.com/gitcmartel/snowtricks.git
 
-4 - Create the mysql database by executing this command : php bin/console doctrine:migrations:migrate
+4 - Run the following command to get the project dependencies : composer update
 
-5 - Insert the DataFixtures into the database : php bin/console doctrine:fixtures:load
+5 - Create the mysql database 'snowtricks' and execute this command ti create the table structure : php bin/console doctrine:migrations:migrate
+
+6 - Insert the DataFixtures into the database : php bin/console doctrine:fixtures:load
