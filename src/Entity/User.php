@@ -15,11 +15,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(
     fields: ['email'], 
-    message: 'Cette adresse email est déjà utilisée !'
+    message: 'This email address is already used  !'
 )]
 #[UniqueEntity(
     fields: ['username'], 
-    message: 'Ce username est déjà utilisé !'
+    message: 'This username is already used !'
 )]
 #[Broadcast]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -32,23 +32,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20)]
     #[assert\Length(
         max: 20, 
-        maxMessage: "20 caractères maximum"
+        maxMessage: "20 characters maximum"
     )]
     #[Assert\NotBlank([
-        'message' => 'Le champ ne peut pas être vide'
+        'message' => 'This field cannot be empty'
     ])]
     private ?string $username = null;
 
     #[ORM\Column(length: 100, unique: true)]
     #[assert\Length(
         max: 100, 
-        maxMessage : "100 caractères maximum"
+        maxMessage : "100 characters maximum"
     )]
     #[Assert\NotBlank([
-        'message' => 'Le champ ne peut pas être vide'
+        'message' => 'This field cannot be empty'
     ])]
     #[Assert\Email([
-        'message' => 'Adresse email incorrecte'
+        'message' => 'Incorrect email address'
     ])]
     private ?string $email = null;
 
@@ -60,11 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\PasswordStrength([
-        'message' => 'Votre mot de passe n\'est pas assez fort. 
-        Ajoutez des chiffres, majuscules, minuscules et caractères spéciaux.'
+        'message' => 'Your password is too weak. 
+        Add numbers, upper, lower and special characters.'
     ])]
     #[Assert\NotBlank([
-        'message' => 'Le champ ne peut pas être vide'
+        'message' => 'This field cannot be empty'
     ])]
     private ?string $password = null;
 
