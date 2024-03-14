@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TricksRepository::class)]
 #[Broadcast]
@@ -19,6 +20,13 @@ class Tricks
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank([
+        'message' => 'This field cannot be empty'
+    ])]
+    #[assert\Length(
+        max: 50, 
+        maxMessage: "50 characters max"
+    )]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -30,6 +38,9 @@ class Tricks
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank([
+        'message' => 'Please select a group'
+    ])]
     private ?TricksGroup $tricks_group = null;
 
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: Message::class, orphanRemoval: true)]
@@ -39,6 +50,7 @@ class Tricks
     private Collection $medias;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank([])]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ["default" => "CURRENT_TIMESTAMP"])]
