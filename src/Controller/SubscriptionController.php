@@ -34,6 +34,9 @@ class SubscriptionController extends AbstractController
             $user->setPassword($hashedPassword);
             //endregion
 
+            //Set user role
+            $user->setRoles(['ROLE_USER']);
+
             //region photo
             $uploadedFile = $form->get('photo')->getData();
 
