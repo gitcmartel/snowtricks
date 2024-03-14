@@ -25,7 +25,8 @@ class TricksController extends AbstractController
 {
     #[Route('/tricks/{tricksId}', name: 'app_tricks')]
     public function index($tricksId, TricksRepository $trickRepository, MediaRepository $mediaRepository, 
-    MessageRepository $messageRepository, Request $request, Security $security, EntityManagerInterface $entityManager): Response
+    MessageRepository $messageRepository, Request $request, Security $security, EntityManagerInterface $entityManager, 
+    ToastService $toastService): Response
     {
         //Fetching the tricks, messages, and media data
         $beginMessageAnchor = '';
@@ -58,6 +59,7 @@ class TricksController extends AbstractController
                 $message = new Message();
                 $form = $this->createForm(MessageFormType::class, $message);
                 $beginMessageAnchor = 'beginMessagesAnchor';
+                $toastService->setMessage('Message submitted !', 'success');
             }
         }
 
