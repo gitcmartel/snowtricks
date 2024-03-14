@@ -7,6 +7,7 @@ use App\Form\MessageFormType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,10 +72,10 @@ class TricksController extends AbstractController
     }
 
     #[Route('/tricks-edit/{tricksId}', name: 'app_tricks_edit')]
+    #[IsGranted('ROLE_USER')]
     public function edit($tricksId, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager, 
         MediaRepository $mediaRepository, MediaService $mediaService, MimeService $mimeService, ToastService $toastService) 
     {
-
         //Fetching data
 
         $originalMedias = new ArrayCollection();
@@ -184,6 +185,7 @@ class TricksController extends AbstractController
     }
 
     #[Route('/tricks/{id}/delete', name: 'app_tricks_delete')]
+    #[IsGranted('ROLE_USER')]
     public function delete(Tricks $tricks, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager, 
         MediaService $mediaService) {
 
