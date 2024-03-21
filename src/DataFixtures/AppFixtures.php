@@ -74,7 +74,7 @@ class AppFixtures extends Fixture
                 istam male dicendi licentiam. Tecum, Atratine, agam lenius, quod et pudor tuus moderatur orationi 
                 meae et meum erga te parentemque tuum beneficium tueri debeo.
             '.$i);
-            $tricks->setSlug('Tricks'.$i, $this->slugger);
+            $tricks->setSlug($this->slugger->slug('Tricks'.$i));
             $this->addReference('tricks'.$i, $tricks);
             $manager->persist($tricks);
             
