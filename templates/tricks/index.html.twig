@@ -102,7 +102,7 @@
         {% if is_granted('ROLE_USER') %}
             <hr>
             <div class="row">
-                <form method="post" action="{{ path('app_tricks', {'tricksId': tricks.id }) }}" id="formMessage">
+                <form method="post" action="{{ path('app_tricks', {'tricks': tricks.id }) }}" id="formMessage">
                     <div class="d-md-flex flex-md-row flex-column justify-content-center my-3">
                         {{ form_widget(formMessage._token) }}
                         {{ form_widget(formMessage.content ) }}
