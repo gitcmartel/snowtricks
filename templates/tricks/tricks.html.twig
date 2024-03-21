@@ -4,8 +4,7 @@
 {% block importmap %}{{ importmap(['app', 'tricks']) }}{% endblock %}
 
 {% block body %}
-<form method="post" action="{{ path('app_tricks_edit', {'tricksId': formTricks.vars.value.id }) }}"
-    enctype="multipart/form-data" id="formTricks">
+{% block form %}{% endblock %}
     {{ form_widget(formTricks._token) }}
     {{ form_widget(formTricks.user) }}
     {{ form_widget(formTricks.id) }}
