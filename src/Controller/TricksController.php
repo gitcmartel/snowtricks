@@ -11,6 +11,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\TricksRepository;
 use App\Repository\MediaRepository;
 use App\Repository\MessageRepository;
@@ -23,16 +24,38 @@ use App\Entity\Message;
 
 class TricksController extends AbstractController
 {
-    #[Route('/tricks/{tricksId}', name: 'app_tricks')]
-    public function index($tricksId, TricksRepository $trickRepository, MediaRepository $mediaRepository, 
-    MessageRepository $messageRepository, Request $request, Security $security, EntityManagerInterface $entityManager, 
-    ToastService $toastService): Response
+    private $security;
+    private $entityManager;
+    private $tricksRepository;
+    private $mediaRepository;
+    private $messageRepository;
+    private $toastService;
+    private $mediaService;
+    private $mimeService;
+    private $slugger;
+
+    function __construct(Security $security, EntityManagerInterface $entityManager, TricksRepository $tricksRepository, 
+    MediaRepository $mediaRepository, MessageRepository $messageRepository, ToastService $toastService, MediaService $mediaService, 
+    MimeService $mimeService, SluggerInterface $slugger) {
+        $this->security = $security;
+        $this->entityManager = $entityManager;
+        $this->tricksRepository = $tricksRepository;
+        $this->mediaRepository = $mediaRepository;
+        $this->messageRepository = $messageRepository;
+        $this->toastService = $toastService;
+        $this->mediaService = $mediaService;
+        $this->mimeService = $mimeService;
+        $this->slugger = $slugger;
+    }
+
+    #[Route('/tricks/{slug}', name: 'app_tricks')]
+    public function index(Tricks $tricks, Request $request): Response
     {
         //Fetching the tricks, messages, and media data
         $beginMessageAnchor = '';
-        $tricks = $trickRepository->findOneById($tricksId);
-        $medias = $mediaRepository->findByTricks($tricksId);
-        $messages = $messageRepository->findMessageByPage($tricksId, 1, 5);
+
+        $medias = $this->mediaRepository->findByTricks($tricks->getId());
+        $messages = $this->messageRepository->findMessageByPage($tricks->getId(), 1, 5);
         $message = new Message();
 
         if ($tricks == null) {
@@ -46,20 +69,20 @@ class TricksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('content') !== "") {
                 $message->setCreationDate(new \DateTime());
-                $message->setUser($security->getUser());
+                $message->setUser($this->security->getUser());
                 $message->setTricks($tricks);
 
-                $entityManager->persist($message);
-                $entityManager->flush();
+                $this->entityManager->persist($message);
+                $this->entityManager->flush();
 
                 //Refreshing messages data
-                $messages = $messageRepository->findMessageByPage($tricksId, 1, 5);
+                $messages = $this->messageRepository->findMessageByPage($tricks->getId(), 1, 5);
 
                 //Creating a new form
                 $message = new Message();
                 $form = $this->createForm(MessageFormType::class, $message);
                 $beginMessageAnchor = 'beginMessagesAnchor';
-                $toastService->setMessage('Message submitted !', 'success');
+                $this->toastService->setMessage('Message submitted !', 'success');
             }
         }
 
@@ -73,25 +96,84 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/tricks-edit/{tricksId}', name: 'app_tricks_edit')]
+    #[Route('/tricks-create', name: 'app_tricks_create')]
     #[IsGranted('ROLE_USER')]
-    public function edit($tricksId, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager, 
-        MediaRepository $mediaRepository, MediaService $mediaService, MimeService $mimeService, ToastService $toastService) 
+    public function create(Request $request) 
+    {
+        $tricks = new Tricks;
+        $tricks->setImage('images/hero_1.jpg');       
+
+        $form = $this->createForm(TricksFormType::class, $tricks);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $uploadedFile = $form->get('image')->getData();
+            $tricks->setSlug($this->slugger->slug($tricks->getName()));  
+
+            //Move the uploaded image 
+            if ($uploadedFile == true) {
+                $newTricksImageFileName = $this->mediaService->moveUploadedFile($uploadedFile);
+                $this->mediaService->deleteMedia($tricks->getImage());
+                $tricks->setImage('medias/' . $newTricksImageFileName);
+            }
+            //endregion
+
+            //region Adding dateTime
+            if ($tricks->getId() === '0') {
+                $tricks->setCreationDate(new \DateTime());
+            } else {
+                $tricks->setModificationDate(new \DateTime());
+            }
+            //endregion
+
+            //region Add media
+            foreach ($form->get('medias') as $formMedia) {
+                $uploadedFile = $formMedia->get('path')->getData();
+                $media = $formMedia->getData(); 
+                
+                if ($uploadedFile !== null) {
+                    $type = $this->mimeService->getType($uploadedFile);
+                    $newMediaFileName = $this->mediaService->moveUploadedFile($uploadedFile);
+                    
+                    $media->setPath('medias/' . $newMediaFileName);
+                    $media->setType($type);                    
+                }
+
+                $videoLink = $formMedia->get('link')->getData();
+
+                if ($videoLink !== null) {
+                    $media->setPath($videoLink);
+                    $media->setType("video");  
+                }
+            }
+            //endregion
+
+            //Saving data
+            $this->entityManager->persist($tricks);
+            $this->entityManager->flush();
+
+            $this->toastService->setMessage('Success !', 'success');
+            return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('tricks/tricks_create.html.twig', [
+            'controller_name' => 'tricksController', 
+            'formTricks' => $form->createView()
+        ]);
+    }
+
+    #[Route('/tricks-edit/{slug}', name: 'app_tricks_edit')]
+    #[IsGranted('ROLE_USER')]
+    public function edit(Tricks $tricks, Request $request) 
     {
         //Fetching data
 
         $originalMedias = new ArrayCollection();
 
-        if ($tricksId === '0') {
-            $tricks = new Tricks();
-            $tricks->setId(0);
-            $tricks->setImage('images/hero_1.jpg');           
-        } else {
-            $tricks = $tricksRepository->findOneById($tricksId);
-
-            foreach($tricks->getMedias() as $media) {
-                $originalMedias->add($media);
-            }
+        foreach($tricks->getMedias() as $media) {
+            $originalMedias->add($media);
         }
 
         $form = $this->createForm(TricksFormType::class, $tricks);
@@ -102,8 +184,10 @@ class TricksController extends AbstractController
             //region Hero Image
             $isHeroDeleted = $form->get('isHeroImageDeleted')->getData();
 
+            $tricks->setSlug($this->slugger->slug($tricks->getName()));  
+
             if($isHeroDeleted === true) {
-                $mediaService->deleteMedia($tricks->getImage());
+                $this->mediaService->deleteMedia($tricks->getImage());
                 $tricks->setImage('images/hero_1.jpg');
             }
 
@@ -111,17 +195,9 @@ class TricksController extends AbstractController
 
             //Move the uploaded image 
             if ($uploadedFile == true) {
-                $newTricksImageFileName = $mediaService->moveUploadedFile($uploadedFile);
-                $mediaService->deleteMedia($tricks->getImage());
+                $newTricksImageFileName = $this->mediaService->moveUploadedFile($uploadedFile);
+                $this->mediaService->deleteMedia($tricks->getImage());
                 $tricks->setImage('medias/' . $newTricksImageFileName);
-            }
-            //endregion
-
-            //region Adding dateTime
-            if ($tricksId === '0') {
-                $tricks->setCreationDate(new \DateTime());
-            } else {
-                $tricks->setModificationDate(new \DateTime());
             }
             //endregion
 
@@ -129,28 +205,28 @@ class TricksController extends AbstractController
             foreach ($originalMedias as $media) {
                 if (false === $tricks->getMedias()->contains($media)) {
                     //We delete the video or image
-                    $mediaService->deleteMedia($media->getPath());
+                    $this->mediaService->deleteMedia($media->getPath());
 
                     //Then we delete the media from the database
                     $tricks->removeMedia($media);
-                    $entityManager->remove($media); 
+                    $this->entityManager->remove($media); 
                 }
             }
 
             //endregion
 
-            //region Add or edit media
+            //region edit media
             foreach ($form->get('medias') as $formMedia) {
                 $uploadedFile = $formMedia->get('path')->getData();
                 $media = $formMedia->getData(); 
                 
                 if ($uploadedFile !== null) {
-                    $type = $mimeService->getType($uploadedFile);
-                    $newMediaFileName = $mediaService->moveUploadedFile($uploadedFile);
+                    $type = $this->mimeService->getType($uploadedFile);
+                    $newMediaFileName = $this->mediaService->moveUploadedFile($uploadedFile);
                     if ($media->getId() !== null) {
-                        $actualMedia = $mediaRepository->findOneById((int)$media->getId());
+                        $actualMedia = $this->mediaRepository->findOneById((int)$media->getId());
                         // If there is an id we update the existing media
-                        $mediaService->deleteMedia($actualMedia->getPath());
+                        $this->mediaService->deleteMedia($actualMedia->getPath());
                         $media->setPath('medias/' . $newMediaFileName);
                     } else {
                         // If the id is null we create a new media
@@ -173,35 +249,34 @@ class TricksController extends AbstractController
             //endregion
 
             //Saving data
-            $entityManager->persist($tricks);
-            $entityManager->flush();
+            $this->entityManager->persist($tricks);
+            $this->entityManager->flush();
 
-            $toastService->setMessage('Success !', 'success');
+            $this->toastService->setMessage('Success !', 'success');
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('tricks/tricks.html.twig', [
+        return $this->render('tricks/tricks_edit.html.twig', [
             'controller_name' => 'tricksController', 
             'formTricks' => $form->createView()
         ]);
     }
 
-    #[Route('/tricks/{id}/delete', name: 'app_tricks_delete')]
+    #[Route('/tricks/{slug}/delete', name: 'app_tricks_delete')]
     #[IsGranted('ROLE_USER')]
-    public function delete(Tricks $tricks, TricksRepository $tricksRepository, Request $request, EntityManagerInterface $entityManager, 
-        MediaService $mediaService) {
+    public function delete(Tricks $tricks, Request $request) {
 
         //Deletes all the tricks related medias
         foreach ($tricks->getMedias() as $media) {
-            $mediaService->deleteMedia($media->getPath());
+            $this->mediaService->deleteMedia($media->getPath());
         }
 
         //Deletes the tricks main image
-        $mediaService->deleteMedia($tricks->getImage());
+        $this->mediaService->deleteMedia($tricks->getImage());
 
         //Deletes the tricks
-        $entityManager->remove($tricks);
-        $entityManager->flush();
+        $this->entityManager->remove($tricks);
+        $this->entityManager->flush();
 
         return $this->json(['message' => 'Le tricks a été supprimé avec succès']);
     }
