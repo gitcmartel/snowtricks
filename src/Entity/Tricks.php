@@ -240,7 +240,7 @@ class Tricks
         return $this->slug;
     }
 
-    public function setSlug(string $title, SluggerInterface $slugger): void {
-        $this->slug = $slugger->slug($title)->lower();
+    public function setSlug(string $title): void {
+        $this->slug = strtolower($title);
     }
 }
