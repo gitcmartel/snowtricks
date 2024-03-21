@@ -108,53 +108,15 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            $uploadedFile = $form->get('image')->getData();
+
             $tricks->setSlug($this->slugger->slug($tricks->getName()));  
 
-            //Move the uploaded image 
-            if ($uploadedFile == true) {
-                $newTricksImageFileName = $this->mediaService->moveUploadedFile($uploadedFile);
-                $this->mediaService->deleteMedia($tricks->getImage());
-                $tricks->setImage('medias/' . $newTricksImageFileName);
-            }
-            //endregion
+            $this->handleNewHeroImage($form, $tricks);
 
-            //region Adding dateTime
-            if ($tricks->getId() === '0') {
-                $tricks->setCreationDate(new \DateTime());
-            } else {
-                $tricks->setModificationDate(new \DateTime());
-            }
-            //endregion
-
-            //region Add media
-            foreach ($form->get('medias') as $formMedia) {
-                $uploadedFile = $formMedia->get('path')->getData();
-                $media = $formMedia->getData(); 
-                
-                if ($uploadedFile !== null) {
-                    $type = $this->mimeService->getType($uploadedFile);
-                    $newMediaFileName = $this->mediaService->moveUploadedFile($uploadedFile);
-                    
-                    $media->setPath('medias/' . $newMediaFileName);
-                    $media->setType($type);                    
-                }
-
-                $videoLink = $formMedia->get('link')->getData();
-
-                if ($videoLink !== null) {
-                    $media->setPath($videoLink);
-                    $media->setType("video");  
-                }
-            }
-            //endregion
+            $this->handleMedias($form, $tricks);
 
             //Saving data
-            $this->entityManager->persist($tricks);
-            $this->entityManager->flush();
-
-            $this->toastService->setMessage('Success !', 'success');
+            $this->save($tricks);
             return $this->redirectToRoute('app_home');
         }
 
@@ -181,78 +143,17 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //region Hero Image
-            $isHeroDeleted = $form->get('isHeroImageDeleted')->getData();
+            $tricks->setSlug($this->slugger->slug($tricks->getName())); 
+            $tricks->setModificationDate(new \DateTime()); 
 
-            $tricks->setSlug($this->slugger->slug($tricks->getName()));  
+            $this->handleHeroImageDeletion($form, $tricks);
+            $this->handleNewHeroImage($form, $tricks);
+            $this->handleMediaDeletions($originalMedias, $tricks);
+            $this->handleMedias($form, $tricks);
 
-            if($isHeroDeleted === true) {
-                $this->mediaService->deleteMedia($tricks->getImage());
-                $tricks->setImage('images/hero_1.jpg');
-            }
-
-            $uploadedFile = $form->get('image')->getData();
-
-            //Move the uploaded image 
-            if ($uploadedFile == true) {
-                $newTricksImageFileName = $this->mediaService->moveUploadedFile($uploadedFile);
-                $this->mediaService->deleteMedia($tricks->getImage());
-                $tricks->setImage('medias/' . $newTricksImageFileName);
-            }
-            //endregion
-
-            //region Delete media
-            foreach ($originalMedias as $media) {
-                if (false === $tricks->getMedias()->contains($media)) {
-                    //We delete the video or image
-                    $this->mediaService->deleteMedia($media->getPath());
-
-                    //Then we delete the media from the database
-                    $tricks->removeMedia($media);
-                    $this->entityManager->remove($media); 
-                }
-            }
-
-            //endregion
-
-            //region edit media
-            foreach ($form->get('medias') as $formMedia) {
-                $uploadedFile = $formMedia->get('path')->getData();
-                $media = $formMedia->getData(); 
-                
-                if ($uploadedFile !== null) {
-                    $type = $this->mimeService->getType($uploadedFile);
-                    $newMediaFileName = $this->mediaService->moveUploadedFile($uploadedFile);
-                    if ($media->getId() !== null) {
-                        $actualMedia = $this->mediaRepository->findOneById((int)$media->getId());
-                        // If there is an id we update the existing media
-                        $this->mediaService->deleteMedia($actualMedia->getPath());
-                        $media->setPath('medias/' . $newMediaFileName);
-                    } else {
-                        // If the id is null we create a new media
-                        $media->setPath('medias/' . $newMediaFileName);
-                        $media->setType($type);                    
-                    }
-                }
-
-                $videoLink = $formMedia->get('link')->getData();
-                if ($videoLink !== null) {
-                    $media->setPath($videoLink);
-                    $media->setType("video");  
-                }
-
-                //If the media is empty we remove it
-                if ($media->getPath() === null) {
-                    $tricks->removeMedia($media);
-                }
-            }
-            //endregion
 
             //Saving data
-            $this->entityManager->persist($tricks);
-            $this->entityManager->flush();
-
-            $this->toastService->setMessage('Success !', 'success');
+            $this->save($tricks);
             return $this->redirectToRoute('app_home');
         }
 
@@ -279,5 +180,79 @@ class TricksController extends AbstractController
         $this->entityManager->flush();
 
         return $this->json(['message' => 'Le tricks a été supprimé avec succès']);
+    }
+
+    private function handleHeroImageDeletion($form, Tricks $tricks): void {
+        //region Hero Image
+        $isHeroDeleted = $form->get('isHeroImageDeleted')->getData();
+
+        if($isHeroDeleted === true) {
+            $this->mediaService->deleteMedia($tricks->getImage());
+            $tricks->setImage('images/hero_1.jpg');
+        }
+    }
+
+    private function handleNewHeroImage($form, Tricks $tricks): void {
+        $uploadedFile = $form->get('image')->getData();
+
+        //Move the uploaded image 
+        if ($uploadedFile == true) {
+            $newTricksImageFileName = $this->mediaService->moveUploadedFile($uploadedFile);
+            $this->mediaService->deleteMedia($tricks->getImage());
+            $tricks->setImage('medias/' . $newTricksImageFileName);
+        }
+    }
+
+    private function handleMediaDeletions($originalMedias, Tricks $tricks): void {
+        foreach ($originalMedias as $media) {
+            if (false === $tricks->getMedias()->contains($media)) {
+                //We delete the video or image
+                $this->mediaService->deleteMedia($media->getPath());
+
+                //Then we delete the media from the database
+                $tricks->removeMedia($media);
+                $this->entityManager->remove($media); 
+            }
+        }
+    }
+
+    private function handleMedias($form, $tricks): void {
+        foreach ($form->get('medias') as $formMedia) {
+            $uploadedFile = $formMedia->get('path')->getData();
+            $media = $formMedia->getData(); 
+            
+            if ($uploadedFile !== null) {
+                $type = $this->mimeService->getType($uploadedFile);
+                $newMediaFileName = $this->mediaService->moveUploadedFile($uploadedFile);
+                if ($media->getId() !== null) {
+                    $actualMedia = $this->mediaRepository->findOneById((int)$media->getId());
+                    // If there is an id we update the existing media
+                    $this->mediaService->deleteMedia($actualMedia->getPath());
+                    $media->setPath('medias/' . $newMediaFileName);
+                } else {
+                    // If the id is null we create a new media
+                    $media->setPath('medias/' . $newMediaFileName);
+                    $media->setType($type);                    
+                }
+            }
+
+            $videoLink = $formMedia->get('link')->getData();
+            if ($videoLink !== null) {
+                $media->setPath($videoLink);
+                $media->setType("video");  
+            }
+
+            //If the media is empty we remove it
+            if ($media->getPath() === null) {
+                $tricks->removeMedia($media);
+            }
+        }
+    }
+
+    private function save($tricks) {
+        $this->entityManager->persist($tricks);
+        $this->entityManager->flush();
+
+        $this->toastService->setMessage('Success !', 'success');
     }
 }
