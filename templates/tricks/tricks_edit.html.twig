@@ -1,6 +1,6 @@
 {% extends 'tricks/tricks.html.twig' %}
 
 {% block form %}
-    <form method="post" action="{{ path('app_tricks_edit', {'tricks': formTricks.vars.value.id }) }}"
+    <form method="post" action="{{ path('app_tricks_edit', {'slug': formTricks.vars.value.slug }) }}"
         enctype="multipart/form-data" id="formTricks">
 {% endblock %}
