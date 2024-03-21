@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TricksRepository::class)]
 #[Broadcast]
+#[ORM\HasLifecycleCallbacks]
 class Tricks
 {
     #[ORM\Id]
@@ -207,6 +208,12 @@ class Tricks
         $this->creation_date = $creation_date;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreationDateValue()
+    {
+        $this->creation_date = new \DateTimeImmutable();
     }
 
     public function getModificationDate(): ?\DateTimeInterface
