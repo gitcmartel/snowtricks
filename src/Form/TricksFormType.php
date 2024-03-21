@@ -69,6 +69,7 @@ class TricksFormType extends AbstractType
                     'class' => 'is-hero-image-deleted' // Ajoute une classe pour le cibler avec JavaScript
                 ]
             ])
+            ->add('slug', HiddenType::class)
         ;
     }
 
