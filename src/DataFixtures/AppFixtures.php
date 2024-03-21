@@ -10,15 +10,18 @@ use App\Entity\Tricks;
 use App\Entity\Media;
 use App\Entity\Message;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use \DateTime;
 
 
 class AppFixtures extends Fixture
 {
     private $passwordHasher;
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    private $slugger;
+    public function __construct(UserPasswordHasherInterface $passwordHasher, SluggerInterface $slugger)
     {
         $this->passwordHasher = $passwordHasher;
+        $this->slugger = $slugger;
     }
 
     public function load(ObjectManager $manager): void
@@ -71,6 +74,7 @@ class AppFixtures extends Fixture
                 istam male dicendi licentiam. Tecum, Atratine, agam lenius, quod et pudor tuus moderatur orationi 
                 meae et meum erga te parentemque tuum beneficium tueri debeo.
             '.$i);
+            $tricks->setSlug('Tricks'.$i, $this->slugger);
             $this->addReference('tricks'.$i, $tricks);
             $manager->persist($tricks);
             
