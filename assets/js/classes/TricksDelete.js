@@ -14,7 +14,7 @@ export default class TricksDelete {
 
     clickHandler(event) {
         const button = event.currentTarget;
-        this.tricksId = button.dataset.tricksId;
+        this.tricksSlug = button.dataset.tricksSlug;
         this.deleteTricks();
     }
 
@@ -30,7 +30,7 @@ export default class TricksDelete {
 
     sendDeleteRequest() {
         $.ajax({
-            url: '/tricks/' + this.tricksId + '/delete',
+            url: '/tricks/' + this.tricksSlug + '/delete',
             type: 'DELETE',
             success: (response) => {
                 alert(response.message);
