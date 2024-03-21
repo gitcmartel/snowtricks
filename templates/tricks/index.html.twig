@@ -29,10 +29,10 @@
         <div class="row">
             <!-- Tricks author, creation and modification date -->
             <div class="col-md-6 fst-italic">
-                <div>Created by {{ tricks.user.username }} on {{ tricks.creationDate.format('d/m/Y') }}</div>
+                <div>Created by {{ tricks.user.username }} on {{ tricks.creationDate.format('d/m/Y H:i') }}</div>
                 <div>Category : {{ tricks.tricksGroup.name }}</div>
                     {% if tricks.modificationDate != null %}
-                        <div>Modifié le {{ tricks.modificationDate.format('d/m/Y') }}</div>
+                        <div>Modified {{ tricks.modificationDate.format('d/m/Y H:i') }}</div>
                     {% endif %}
                 <div id="tricksId" class="d-none">{{ tricks.id }}</div>
             </div>
