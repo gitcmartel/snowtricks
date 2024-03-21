@@ -9,8 +9,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[ORM\Entity(repositoryClass: TricksRepository::class)]
+#[ORM\UniqueConstraint(name: 'name', columns: ['name',])]
+#[UniqueEntity(fields: ['name'], message: 'This name is already in use.')]
 #[Broadcast]
 #[ORM\HasLifecycleCallbacks]
 class Tricks
@@ -20,7 +24,7 @@ class Tricks
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     #[Assert\NotBlank([
         'message' => 'This field cannot be empty'
     ])]
@@ -59,6 +63,9 @@ class Tricks
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $modification_date = null;
+
+    #[ORM\Column(length: 255, unique: true)]
+    private $slug;
 
     public function __construct()
     {
@@ -226,5 +233,14 @@ class Tricks
         $this->modification_date = $modification_date;
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $title, SluggerInterface $slugger): void {
+        $this->slug = $slugger->slug($title)->lower();
     }
 }
