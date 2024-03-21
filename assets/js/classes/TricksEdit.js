@@ -82,10 +82,10 @@ export default class TricksEdit {
 
             document.querySelector('#modalYesButton').addEventListener('click', () => {
                 modalDialog.hideModal();
-                var tricksId = document.getElementById('tricks_form_id').value;
+                var tricksSlug = document.getElementById('tricks_form_slug').value;
 
                 $.ajax({
-                    url: '/tricks/' + tricksId + '/delete',
+                    url: '/tricks/' + tricksSlug + '/delete',
                     type: 'DELETE',
                     success: function(response) {
                         // Gérer la réponse du serveur
