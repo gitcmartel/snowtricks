@@ -7,5 +7,3 @@
 
 import './styles/bootstrap.min.css';
 import './styles/style.css';
-import './styles/jquery-ui.css';
-import './styles/jquery.fancybox.min.css';
